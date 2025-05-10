@@ -28,7 +28,7 @@ namespace GymApp_v1.Data
         public required string Username { get; set; } = string.Empty;
 
         public int? MembershipId { get; set; }
-        public Membership Membership { get; set; }
+        public Membership? Membership { get; set; }
 
         public List<Subscription> Subscriptions { get; set; } = new();
 

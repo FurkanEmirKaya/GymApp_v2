@@ -515,3 +515,15 @@ obj/Debug/net8.0/staticwebassets.development.json
 obj/Debug/net8.0/ref/GymApp_v1.dll
 obj/Debug/net8.0/refint/GymApp_v1.dll
 obj/Debug/net8.0/staticwebassets/msbuild.GymApp_v1.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+Data/User.cs
+bin/Debug/net8.0/GymApp_v1.pdb
+bin/Debug/net8.0/GymApp_v1.exe
+bin/Debug/net8.0/GymApp_v1.dll
+obj/Debug/net8.0/apphost.exe
+obj/Debug/net8.0/GymApp_v1.AssemblyInfoInputs.cache
+obj/Debug/net8.0/GymApp_v1.csproj.CoreCompileInputs.cache
+obj/Debug/net8.0/GymApp_v1.pdb
+obj/Debug/net8.0/GymApp_v1.dll
+obj/Debug/net8.0/GymApp_v1.sourcelink.json
+obj/Debug/net8.0/ref/GymApp_v1.dll
+obj/Debug/net8.0/refint/GymApp_v1.dll
