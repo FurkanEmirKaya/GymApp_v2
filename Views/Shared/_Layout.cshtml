@@ -1,6 +1,8 @@
 ﻿@{
     var hideLayout = ViewData["HideLayout"] as bool? ?? false;
 }
+@using System.Security.Claims
+@inject GymApp_v1.Data.DataContext _layoutContext
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +17,23 @@
 <body>
     @if (!hideLayout)
     {
+        
+        string? email      = User.FindFirstValue(ClaimTypes.Email);
+        byte[]? pictureData = null;
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            pictureData = _layoutContext.Users
+                            .Where(u => u.Email == email)
+                            .Select(u => u.ProfilePicture)
+                            .FirstOrDefault();
+        }
+
+        // base64 string'e çevir (null ise boş dize)
+        var pictureBase64 = pictureData != null
+            ? Convert.ToBase64String(pictureData)
+            : null;
+    
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container-fluid">
@@ -49,7 +68,21 @@
                         <ul class="navbar-nav">
                             @if (User.Identity?.IsAuthenticated == true)
                             {
-                                <li class="nav-item">
+                                <li class="nav-item d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(pictureBase64))
+                                    {
+                                        <img src="data:image/png;base64,@pictureBase64"
+                                            class="rounded-circle me-2"
+                                            width="32" height="32"
+                                            alt="Profil Fotoğrafı" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/default-avatar.jpg"
+                                            class="rounded-circle me-2"
+                                            width="32" height="32"
+                                            />
+                                    }
                                     <span class="nav-link text-dark">Merhaba, @User.Identity.Name</span>
                                 </li>
                                 <li class="nav-item">
