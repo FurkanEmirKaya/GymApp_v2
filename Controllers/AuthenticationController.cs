@@ -4,16 +4,18 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using GymApp_v1.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymApp_v1.Controllers
 {
     public class AuthenticationController : Controller
     {
         private readonly DataContext _context;
-
-        public AuthenticationController(DataContext context)
+        private readonly IPasswordHasher<User> _hasher;
+        public AuthenticationController(DataContext context,  IPasswordHasher<User> hasher)
         {
             _context = context;
+            _hasher = hasher;
         }
 
         [HttpGet]
@@ -31,8 +33,15 @@ namespace GymApp_v1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
-
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            
+            if (user == null)
+            {
+                ViewBag.Error = "E-mail bulunamadı.";
+                return View();
+            }
+            var result = _hasher.VerifyHashedPassword(user, user.Password, password);
+            if (result == PasswordVerificationResult.Success) {
             if (user != null)
             {
                 var claims = new List<Claim>
@@ -53,6 +62,7 @@ namespace GymApp_v1.Controllers
                 else
                     return RedirectToAction("Dashboard", "Profile");
             }
+            }
 
             ViewBag.Error = "Geçersiz email veya şifre";
             return View();
@@ -69,6 +79,9 @@ namespace GymApp_v1.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+            
             if (ModelState.IsValid)
             {
                 var userExists = _context.Users.Any(u => u.Email == model.Email);
@@ -77,15 +90,17 @@ namespace GymApp_v1.Controllers
                     ModelState.AddModelError("", "Bu e-posta ile zaten kayıt olunmuş.");
                     return View(model);
                 }
-
+                var hashedPassword = _hasher.HashPassword(null!, model.Password);
                 var newUser = new User
                 {
                     Username = model.Email.Split('@')[0],
                     Email = model.Email,
-                    Password = model.Password,
-                    Role = "User"
+                    Role = "User",
+                    Password = hashedPassword
                 };
 
+                newUser.Password = _hasher.HashPassword(newUser, model.Password);
+                
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync(); // ✅ BURASI DB'ye kaydeder
 
@@ -144,7 +159,7 @@ namespace GymApp_v1.Controllers
                 return View(model);
             }
 
-            user.Password = model.NewPassword;
+            user.Password = _hasher.HashPassword(user, model.NewPassword); 
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Login", "Authentication");
