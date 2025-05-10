@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Giriş";
+    ViewData["HideLayout"] = true;
+}
+
+<h2>Giriş Yap</h2>
+
+<form method="post" asp-controller="Authentication" asp-action="Login">
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div>
+        <label>Şifre</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Giriş Yap</button>
+    <div class="mt-3">
+        <a asp-controller="Authentication" asp-action="Register">Kayıt Ol</a> |
+        <a asp-controller="Authentication" asp-action="ForgotPassword">Şifremi Unuttum</a>
+    </div>
+
+
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="text-danger mt-2">@ViewBag.Error</div>
+    }
+</form>

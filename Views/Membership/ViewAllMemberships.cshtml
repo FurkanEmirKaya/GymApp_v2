@@ -1,0 +1,53 @@
+@model IEnumerable<GymApp_v1.Data.Membership>
+
+@{
+    ViewData["Title"] = "Üyelik Paketi Listesi";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Admin" asp-action="CreateMemberships" class="btn btn-sm btn-primary mb-2">Üyelik Paketi Ekle</a>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Üyelik Id</th>
+            <th>Başlık</th>
+            <th>Açıklama</th>
+            <th>Süre (gün)</th>
+            <th>Resim</th>
+            <th>Fiyat</th>
+            <th>Tip</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var memberships in Model)
+        {
+            <tr>
+                <td>@memberships.Id</td>
+                <td>@memberships.Title</td>
+                <td>@memberships.Description</td>
+                <td>@memberships.DurationInDays</td>
+                <td>
+                    <img src="data:image/png;base64,@Convert.ToBase64String(memberships.Image)" alt="Üyelik Resmi" width="100" />
+                </td>
+                <td>@memberships.Price</td>
+                <td>@memberships.Type</td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Membership" asp-action="Details" asp-route-id="@memberships.Id" class="btn btn-sm btn-primary">Detaylar</a>
+                        <a asp-controller="Membership" asp-action="Edit" asp-route-id="@memberships.Id" class="btn btn-sm btn-secondary">Düzenle</a>
+                        <a asp-controller="Membership" asp-action="Delete" asp-route-id="@memberships.Id" class="btn btn-sm btn-danger">Sil</a>
+                    }
+                    else if (User.IsInRole("User"))
+                    {
+                        <a asp-controller="Subscription" asp-action="Buy" asp-route-id="@memberships.Id" class="btn btn-sm btn-success">Satın Al</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

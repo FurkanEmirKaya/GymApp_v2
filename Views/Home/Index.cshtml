@@ -1,0 +1,33 @@
+﻿@model List<GymApp_v1.Data.User>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Kullanıcı Listesi</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Kullanıcı Adı</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Üyelik</th>
+                <th>Fiyat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>@(user.Membership?.Title ?? "Üyelik Yok")</td>
+                    <td>@(user.Membership?.Price.ToString("0.00") ?? "-") ₺</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

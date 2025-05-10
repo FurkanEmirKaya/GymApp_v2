@@ -1,0 +1,25 @@
+﻿@model GymApp_v1.Data.User
+@{
+    ViewData["Title"] = "Kullanıcı Paneli";
+    var subscription = ViewBag.Subscription as GymApp_v1.Data.Subscription;
+}
+
+<h2>Hoş geldin @Model.Username!</h2>
+
+<ul>
+    <li>Email: @Model.Email</li>
+    <li>Rol: @Model.Role</li>
+
+    @if (subscription != null)
+    {
+        <li>Üyelik: @subscription.Membership.Title</li>
+        <li>Süre: @subscription.Membership.DurationInDays gün</li>
+        <li>Fiyat: @subscription.Membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</li>
+        <li>Başlangıç: @subscription.StartDate.ToShortDateString()</li>
+        <li>Bitiş: @subscription.EndDate.ToShortDateString()</li>
+    }
+    else
+    {
+        <li>Üyelik: Yok</li>
+    }
+</ul>

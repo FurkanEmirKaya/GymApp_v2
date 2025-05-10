@@ -1,0 +1,53 @@
+@model List<GymApp_v1.Data.User>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+}
+
+<a asp-controller="Admin" asp-action="CreateUsers" class="btn btn-sm btn-primary">Yeni Kullanıcı Ekle</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kullanıcı Adı</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Üyelik</th>
+            <th>Fiyat</th>
+            <th>Profil Resmi</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            var latestSub = user.Subscriptions?.OrderByDescending(s => s.StartDate).FirstOrDefault();
+
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@(latestSub?.Membership?.Title ?? "Üyelik Yok")</td>
+                <td>@(latestSub?.Membership?.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR")) ?? "- ₺")</td>
+                <td>
+                    @if (user.ProfilePicture != null && user.ProfilePicture.Length > 0)
+                    {
+                        var base64 = Convert.ToBase64String(user.ProfilePicture);
+                        <img src="data:image/png;base64,@base64" width="100" />
+                    }
+                    else
+                    {
+                        <img src="~/images/placeholder.png" alt="Varsayılan Resim" width="100" />
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-secondary">Düzenle</a>
+                        <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger">Sil</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

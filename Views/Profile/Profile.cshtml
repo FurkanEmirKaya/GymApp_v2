@@ -1,0 +1,14 @@
+﻿@model GymApp_v1.Data.User
+
+@{
+    ViewData["Title"] = "Kullanıcı Paneli";
+}
+
+<h2>Hoş geldin @Model.Username!</h2>
+
+<ul>
+    <li>Email: @Model.Email</li>
+    <li>Rol: @Model.Role</li>
+    <li>Üyelik: @(Model.Membership?.Title ?? "Yok")</li>
+    <li>Üyelik Fiyatı: @(Model.Membership?.Price.ToString("0.00") ?? "-") ₺</li>
+</ul>
