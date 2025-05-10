@@ -23,3 +23,12 @@
         <li>Üyelik: Yok</li>
     }
 </ul>
+
+@section Scripts {
+    <script>
+    window.history.replaceState({}, '', window.location.href);
+    window.addEventListener('popstate', function () {
+        window.location.reload(true);
+    });
+    </script>
+}

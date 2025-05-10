@@ -19,28 +19,28 @@ namespace efCoreApp.AddControllers
         [HttpGet]
         public async Task<IActionResult> Buy(int id)
         {
-            // Üyelik var mý kontrol et
+            // Ãœyelik var mÄ± kontrol et
             var membership = await _context.Memberships.FindAsync(id);
             if (membership == null)
-                return NotFound("Üyelik bulunamadý.");
+                return NotFound("Ãœyelik bulunamadÄ±.");
 
-            // Giriþ yapan kullanýcýyý al
+            // GiriÅŸ yapan kullanÄ±cÄ±yÄ± al
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
             if (user == null)
                 return Unauthorized();
 
-            // Kullanýcýnýn aktif bir üyeliði var mý kontrol et
+            // KullanÄ±cÄ±nÄ±n aktif bir Ã¼yeliÄŸi var mÄ± kontrol et
             var existingActiveSubscription = await _context.Subscriptions
                 .FirstOrDefaultAsync(s => s.UserId == user.Id && s.EndDate > DateTime.Now);
 
             if (existingActiveSubscription != null)
             {
-                TempData["Info"] = "Zaten aktif bir üyeliðiniz var. Yeni üyelik satýn almak için mevcut üyeliðinizin bitmesini bekleyin.";
+                TempData["Info"] = "Zaten aktif bir Ã¼yeliÄŸiniz var. Yeni Ã¼yelik satÄ±n almak iÃ§in mevcut Ã¼yeliÄŸinizin bitmesini bekleyebilir veya iptal edebilirisiniz.";
                 return RedirectToAction("Dashboard", "Profile");
             }
 
-            // Yeni abonelik oluþtur
+            // Yeni abonelik oluÅŸtur
             var subscription = new Subscription
             {
                 UserId = user.Id,
@@ -52,7 +52,37 @@ namespace efCoreApp.AddControllers
             _context.Subscriptions.Add(subscription);
             await _context.SaveChangesAsync();
 
-            TempData["Info"] = "Üyelik baþarýyla satýn alýndý.";
+            TempData["Info"] = "Ãœyelik baÅŸarÄ±yla satÄ±n alÄ±ndÄ±.";
+            return RedirectToAction("Dashboard", "Profile");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            // 1) Ãœyelik nesnesini bulmaya gerek yok, doÄŸrudan Subscription Ã¼zerinden devam edelim
+            //    id: Subscription.Id veya MembershipId ise ona gÃ¶re sorgu yapÄ±n
+            //    AÅŸaÄŸÄ±da id Subscription.Id olarak varsaydÄ±m.
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+                return Unauthorized();
+
+            // 2) Ä°lgili aboneliÄŸi getir
+            var subscription = await _context.Subscriptions
+                .FirstOrDefaultAsync(s => s.Id == id && s.UserId == user.Id && s.EndDate > DateTime.Now);
+
+            if (subscription == null)
+            {
+                TempData["Error"] = "Aktif aboneliÄŸiniz bulunamadÄ± veya zaten sona ermiÅŸ.";
+                return RedirectToAction("Dashboard", "Profile");
+            }
+
+            // 3a) Soft-cancel: bugÃ¼n itibariyle bitir
+            subscription.EndDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Info"] = "AboneliÄŸiniz iptal edildi.";
             return RedirectToAction("Dashboard", "Profile");
         }
     }

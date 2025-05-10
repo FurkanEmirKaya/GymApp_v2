@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymApp_v1.Controllers
 {
-    [Authorize(Roles = "User")] // sadece "User" rolündeki kullanýcýlar görebilir
+    [Authorize(Roles = "User")] // sadece "User" rolï¿½ndeki kullanï¿½cï¿½lar gï¿½rebilir
     public class ProfileController : Controller
     {
         private readonly DataContext _context;
@@ -15,19 +15,22 @@ namespace GymApp_v1.Controllers
         {
             _context = context;
         }
-
-        public IActionResult Dashboard()
-        {
+        
+        public async Task<IActionResult> Dashboard()
+        {   
             var email = User.FindFirstValue(ClaimTypes.Email);
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
 
             if (user == null)
                 return Unauthorized();
-
-            var subscription = _context.Subscriptions
-                .Include(s => s.Membership)
-                .FirstOrDefault(s => s.UserId == user.Id);
-
+        
+            // YalnÄ±zca aktif (EndDate > Now) aboneliÄŸi getir
+            var subscription = await _context.Subscriptions
+            .Include(s => s.Membership)
+            .Where(s => s.UserId == user.Id && s.EndDate > DateTime.Now)
+            .OrderByDescending(s => s.EndDate)
+            .FirstOrDefaultAsync();
+            
             ViewBag.Subscription = subscription;
             return View(user); // user yine Model
         }

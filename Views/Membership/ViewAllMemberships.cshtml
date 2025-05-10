@@ -44,7 +44,32 @@
                     }
                     else if (User.IsInRole("User"))
                     {
-                        <a asp-controller="Subscription" asp-action="Buy" asp-route-id="@memberships.Id" class="btn btn-sm btn-success">Satın Al</a>
+                @if (ViewBag.subscription != null && ViewBag.subscription.MembershipId == memberships.Id)
+                {
+                    <!-- Aboneliği iptal et butonu -->
+                    <form asp-controller="Subscription"
+                          asp-action="Cancel"
+                          asp-route-id="@ViewBag.subscription.Id"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit"
+                                class="btn btn-sm btn-warning"
+                                onclick="return confirm('Üyeliğinizi iptal etmek istediğinize emin misiniz?');">
+                            Üyeliği İptal Et
+                        </button>
+                    </form>
+                }
+                else if (ViewBag.subscription == null)
+                {
+                    <!-- Hiç abonelik yoksa satın al butonu -->
+                    <a asp-controller="Subscription"
+                       asp-action="Buy"
+                       asp-route-id="@memberships.Id"
+                       class="btn btn-sm btn-success"
+                       method="post">
+                        Satın Al
+                    </a>
+                }
                     }
                 </td>
             </tr>

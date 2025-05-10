@@ -1,4 +1,5 @@
-﻿using GymApp_v1.Data;
+﻿using System.Security.Claims;
+using GymApp_v1.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,18 @@ namespace efCoreApp.AddControllers
             _context = context;
         }
 
+        [HttpGet]
         public async Task<IActionResult> ViewAllMemberships()
         {
             var memberships = await _context.Memberships.ToListAsync();
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            
+            var subscription = await _context.Subscriptions
+                .Where(s => s.User.Email == userEmail && s.EndDate > DateTime.Now)
+                .FirstOrDefaultAsync(); 
+            
+            ViewBag.Subscription = subscription;
+            
             return View(memberships);
         }
 

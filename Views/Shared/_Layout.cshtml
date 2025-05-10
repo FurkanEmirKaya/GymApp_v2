@@ -19,7 +19,6 @@
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-controller="Home" asp-action="Index">GymApp_v1</a>
-
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -33,14 +32,12 @@
                                     <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListAllUsers">Kullanıcıları Yönet</a>
                                 </li>
                             }
-
                             @if (User.IsInRole("User"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Profile" asp-action="Dashboard">Profilim</a>
                                 </li>
                             }
-
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Membership" asp-action="ViewAllMemberships">Üyelik Paketleri</a>
                             </li>
@@ -70,6 +67,19 @@
                 </div>
             </nav>
         </header>
+    }
+
+    @{
+        var infoMsg  = TempData["Info"]  as string;
+        var errorMsg = TempData["Error"] as string;
+    }
+    @if (!string.IsNullOrEmpty(infoMsg))
+    {
+        <div class="alert alert-success">@infoMsg</div>
+    }
+    @if (!string.IsNullOrEmpty(errorMsg))
+    {
+        <div class="alert alert-danger">@errorMsg</div>
     }
 
     <div class="container">
