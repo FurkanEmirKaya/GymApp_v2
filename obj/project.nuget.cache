@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZodvoaA8qz8=",
+  "dgSpecHash": "0sA5ylVDq2Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\GymApp_v1.csproj",
+  "projectFilePath": "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\GymApp_v1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\furka\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\furka\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

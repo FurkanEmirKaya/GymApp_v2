@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\GymApp_v1.csproj": {}
+    "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\GymApp_v1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\GymApp_v1.csproj": {
+    "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\GymApp_v1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\GymApp_v1.csproj",
+        "projectUniqueName": "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\GymApp_v1.csproj",
         "projectName": "GymApp_v1",
-        "projectPath": "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\GymApp_v1.csproj",
+        "projectPath": "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\GymApp_v1.csproj",
         "packagesPath": "C:\\Users\\furka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\furka\\Downloads\\GymApp_v2\\GymApp_v1\\obj\\",
+        "outputPath": "C:\\Users\\furka\\Desktop\\Furkan_Emir\\Github_Repositories\\GymApp_v2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

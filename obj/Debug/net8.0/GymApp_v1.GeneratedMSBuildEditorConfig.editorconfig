@@ -9,89 +9,89 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GymApp_v1
 build_property.RootNamespace = GymApp_v1
-build_property.ProjectDir = C:\Users\furka\Downloads\GymApp_v2\GymApp_v1\
+build_property.ProjectDir = C:\Users\furka\Desktop\Furkan_Emir\Github_Repositories\GymApp_v2\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\furka\Downloads\GymApp_v2\GymApp_v1
+build_property.MSBuildProjectDirectory = C:\Users\furka\Desktop\Furkan_Emir\Github_Repositories\GymApp_v2
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Admin/CreateMemberships.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Admin/CreateMemberships.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlTWVtYmVyc2hpcHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Admin/ListAllUsers.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Admin/ListAllUsers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTGlzdEFsbFVzZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Admin/_ViewStart.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Admin/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Authentication/ForgotPassword.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Authentication/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cRm9yZ290UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Authentication/Login.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Authentication/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Authentication/Register.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Authentication/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Authentication/ResetPassword.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Authentication/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cUmVzZXRQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Home/Index.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Home/Privacy.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Membership/Details.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Membership/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Membership/Edit.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Membership/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Membership/ViewAllMemberships.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Membership/ViewAllMemberships.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVtYmVyc2hpcFxWaWV3QWxsTWVtYmVyc2hpcHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Profile/Dashboard.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Profile/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Profile/Profile.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Profile/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Shared/Error.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/_ViewImports.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/_ViewStart.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/furka/Downloads/GymApp_v2/GymApp_v1/Views/Shared/_Layout.cshtml]
+[C:/Users/furka/Desktop/Furkan_Emir/Github_Repositories/GymApp_v2/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-igqembi352
