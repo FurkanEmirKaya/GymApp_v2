@@ -1,5 +1,6 @@
 using GymApp_v1.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,10 +9,12 @@ var configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>(); 
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Authentication/Login"; // yetkisiz kullanýcýlarý buraya yollar
+        options.LoginPath = "/Authentication/Login"; // yetkisiz kullanï¿½cï¿½larï¿½ buraya yollar
     });
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -38,12 +41,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Varsayýlan route
+// Varsayï¿½lan route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
 
-// Uygulama baþlangýcýnda varsayýlan kullanýcýlarý oluþtur
+// Uygulama baï¿½langï¿½cï¿½nda varsayï¿½lan kullanï¿½cï¿½larï¿½ oluï¿½tur
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DataContext>();
@@ -53,7 +56,7 @@ using (var scope = app.Services.CreateScope())
         var admin = new User
         {
             Email = "admin@gym.com",
-            Password = "123456", // sade þifre, sadece test için
+            Password = "123456", // sade ï¿½ifre, sadece test iï¿½in
             Role = "Admin",
             Username = "admin"
         };
@@ -67,7 +70,7 @@ using (var scope = app.Services.CreateScope())
         var normalUser = new User
         {
             Email = "user@gym.com",
-            Password = "123456", // sade þifre, sadece test için
+            Password = "123456", // sade ï¿½ifre, sadece test iï¿½in
             Role = "User",
             Username = "gymuser"
         };
