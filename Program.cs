@@ -50,27 +50,29 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-
+    var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
     if (!context.Users.Any(u => u.Email == "admin@gym.com"))
     {
+        var adminHash = hasher.HashPassword(null!, "123456");
         var admin = new User
         {
             Email = "admin@gym.com",
-            Password = "123456", // sade �ifre, sadece test i�in
+            Password = adminHash, // sadece test için
             Role = "Admin",
             Username = "admin"
         };
-
+        
         context.Users.Add(admin);
         context.SaveChanges();
     }
 
     if (!context.Users.Any(u => u.Email == "user@gym.com"))
-    {
+    {   
+        var userHash = hasher.HashPassword(null!, "123456");
         var normalUser = new User
         {
             Email = "user@gym.com",
-            Password = "123456", // sade �ifre, sadece test i�in
+            Password = userHash, // sadece test için
             Role = "User",
             Username = "gymuser"
         };

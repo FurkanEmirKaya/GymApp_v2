@@ -30,9 +30,6 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="CreateMemberships">Üyelikleri Yönet</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListAllUsers">Kullanıcıları Yönet</a>
                                 </li>
                             }
@@ -53,7 +50,7 @@
                         </ul>
 
                         <ul class="navbar-nav">
-                            @if (User.Identity.IsAuthenticated)
+                            @if (User.Identity?.IsAuthenticated == true)
                             {
                                 <li class="nav-item">
                                     <span class="nav-link text-dark">Merhaba, @User.Identity.Name</span>
