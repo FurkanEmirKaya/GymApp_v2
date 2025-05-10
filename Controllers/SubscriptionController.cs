@@ -83,7 +83,7 @@ namespace efCoreApp.AddControllers
             await _context.SaveChangesAsync();
 
             TempData["Info"] = "Aboneliğiniz iptal edildi.";
-            return RedirectToAction("Dashboard", "Profile");
+            return RedirectToAction("ProfilePage", "Profile");
         }
     }
 }
