@@ -35,7 +35,7 @@ namespace GymApp_v1.Controllers
             return View(user); // user yine Model
         }
 
-        public IActionResult ProfilePage()
+        public IActionResult DashboardCancelledMembership()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
