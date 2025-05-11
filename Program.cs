@@ -45,7 +45,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
-
+    
+app.MapControllers(); 
 // Uygulama ba�lang�c�nda varsay�lan kullan�c�lar� olu�tur
 using (var scope = app.Services.CreateScope())
 {

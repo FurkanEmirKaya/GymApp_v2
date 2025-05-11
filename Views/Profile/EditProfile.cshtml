@@ -1,0 +1,63 @@
+@model GymApp_v1.ViewModels.EditProfileViewModel
+@{
+    ViewData["Title"] = "Profili Düzenle";
+}
+
+<h2>Profili Düzenle</h2>
+
+<form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CurrentProfilePicture" />
+    
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="NewPassword" class="form-label">Yeni Şifre (Değiştirmek istiyorsanız doldurun)</label>
+        <input asp-for="NewPassword" type="password" class="form-control" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ConfirmPassword" class="form-label">Yeni Şifreyi Onayla</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Mevcut Profil Resmi</label><br />
+        @if (Model.CurrentProfilePicture != null && Model.CurrentProfilePicture.Length > 0)
+        {
+            <img src="data:image/png;base64,@Convert.ToBase64String(Model.CurrentProfilePicture)" 
+                 width="150" class="mb-2" style="border-radius: 5px;" />
+        }
+        else
+        {
+            <p>Profil resmi bulunmuyor</p>
+        }
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="NewProfilePicture" class="form-label">Yeni Profil Resmi (Değiştirmek için seçin)</label>
+        <input asp-for="NewProfilePicture" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="NewProfilePicture" class="text-danger"></span>
+    </div>
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+        <a asp-action="Dashboard" class="btn btn-secondary">İptal</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

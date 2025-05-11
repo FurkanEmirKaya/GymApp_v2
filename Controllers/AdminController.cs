@@ -46,14 +46,14 @@ namespace efCoreApp.AddControllers
                 await LoadUserFormData();
                 return View(model);
             }
-            
+
             var user = new User
             {
                 Email = model.Email,
                 Username = model.Username,
                 Role = model.Role,
                 MembershipId = model.MembershipId,
-                Password = String.Empty
+                Password = string.Empty // Geçici değer, hemen sonra hash'lenmiş şifre ile değişecek
             };
             
             // Hash password
@@ -132,6 +132,16 @@ namespace efCoreApp.AddControllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction("ListAllUsers");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListAllUsers()
+        {
+            // Kullanıcıları, ilişkili Membership verisiyle beraber çekiyoruz
+            var users = await _context.Users
+                                    .Include(u => u.Membership)
+                                    .ToListAsync();
+            return View(users);
         }
         
         [HttpGet]
