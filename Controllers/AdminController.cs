@@ -113,7 +113,7 @@ namespace efCoreApp.AddControllers
             return RedirectToAction("ListAllUsers");
         }
 
-                [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> ListAllUsers(string? searchTerm, string? roleFilter, string? membershipFilter, string? sortBy)
         {
             // Tüm kullanıcıları include ile al

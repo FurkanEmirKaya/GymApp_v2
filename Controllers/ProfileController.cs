@@ -38,7 +38,7 @@ namespace GymApp_v1.Controllers
             return View(user); // user yine Model
         }
 
-                [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);

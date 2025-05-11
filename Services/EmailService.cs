@@ -75,7 +75,7 @@ namespace GymApp_v2.Services
                         
                         <div style='background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #6c757d;'>
                             <p>Bu e-posta otomatik olarak gönderilmiştir, lütfen yanıtlamayınız.</p>
-                            <p>&copy; 2024 Gym App. Tüm hakları saklıdır.</p>
+                            <p>&copy; 2025 Gym App. Tüm hakları saklıdır.</p>
                         </div>
                     </div>
                 ",

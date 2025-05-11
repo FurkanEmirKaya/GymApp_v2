@@ -3,52 +3,69 @@
     ViewData["Title"] = "Yeni Kullanıcı Ekle";
 }
 
-<h2>Yeni Kullanıcı Ekle</h2>
+<link rel="stylesheet" href="~/css/admin.css" />
 
-<form asp-controller="Admin" asp-action="CreateUsers" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+<div class="admin-container">
+    <h2><i class="bi bi-person-plus me-2"></i>Yeni Kullanıcı Ekle</h2>
     
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label">Şifre</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+    <div class="card">
+        <div class="card-header">
+            <h5>Kullanıcı Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Admin" asp-action="CreateUsers" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="kullanici@ornek.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Şifre</label>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="En az 6 karakter" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
+                    <input asp-for="Username" class="form-control" placeholder="kullaniciadi" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Role" class="form-label">Rol</label>
+                    <select asp-for="Role" class="form-select" asp-items="ViewBag.Roles">
+                        <option value="">Rol Seçin</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="MembershipId" class="form-label">Üyelik</label>
+                    <select asp-for="MembershipId" class="form-select" asp-items="ViewBag.Memberships">
+                        <option value="">Üyelik Seçin (İsteğe Bağlı)</option>
+                    </select>
+                    <span asp-validation-for="MembershipId" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="ProfilePicture" class="form-label">Profil Resmi</label>
+                    <input asp-for="ProfilePicture" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="ListAllUsers" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Geri Dön
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-check me-1"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-    
-    <div class="mb-3">
-        <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    
-    <div class="mb-3">
-        <label asp-for="Role" class="form-label">Rol</label>
-        <select asp-for="Role" class="form-control" asp-items="ViewBag.Roles">
-            <option value="">Rol Seçin</option>
-        </select>
-        <span asp-validation-for="Role" class="text-danger"></span>
-    </div>
-    
-    <div class="mb-3">
-        <label asp-for="MembershipId" class="form-label">Üyelik</label>
-        <select asp-for="MembershipId" class="form-control" asp-items="ViewBag.Memberships">
-            <option value="">Üyelik Seçin (İsteğe Bağlı)</option>
-        </select>
-        <span asp-validation-for="MembershipId" class="text-danger"></span>
-    </div>
-    
-    <div class="mb-3">
-        <label asp-for="ProfilePicture" class="form-label">Profil Resmi</label>
-        <input asp-for="ProfilePicture" type="file" class="form-control" />
-        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Kaydet</button>
-    <a asp-action="ListAllUsers" class="btn btn-secondary">Geri Dön</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

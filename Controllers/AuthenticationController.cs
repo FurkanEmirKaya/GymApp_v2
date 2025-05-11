@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 
 namespace GymApp_v1.Controllers
 {
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public class AuthenticationController : Controller
     {
         private readonly DataContext _context;

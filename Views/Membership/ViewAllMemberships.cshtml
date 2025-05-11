@@ -3,159 +3,187 @@
     ViewData["Title"] = "Üyelik Paketi Listesi";
 }
 
-@if (User.IsInRole("Admin"))
-{
-    <a asp-controller="Admin" asp-action="CreateMemberships" class="btn btn-sm btn-primary mb-2">Üyelik Paketi Ekle</a>
-}
+<div class="admin-container">
+    <h2>Üyelik Paketi Listesi</h2>
+    
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Admin" asp-action="CreateMemberships" class="btn btn-sm btn-primary mb-3">
+            <i class="bi bi-plus-circle"></i> Üyelik Paketi Ekle
+        </a>
+    }
 
-<!-- Arama ve Filtreleme Formu -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5>Arama ve Filtreleme</h5>
+    <!-- Arama ve Filtreleme Formu -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Arama ve Filtreleme</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="ViewAllMemberships">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="searchTerm" class="form-label">Arama</label>
+                        <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
+                               value="@Model.SearchTerm" placeholder="Başlık, açıklama veya tip ara...">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="typeFilter" class="form-label">Üyelik Tipi</label>
+                        <select class="form-select" id="typeFilter" name="typeFilter">
+                            <option value="all">Tüm Tipler</option>
+                            @foreach (var type in Model.AvailableTypes)
+                            {
+                                <option value="@type" selected="@(Model.TypeFilter == type)">@type</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="priceFilter" class="form-label">Fiyat Aralığı</label>
+                        <select class="form-select" id="priceFilter" name="priceFilter">
+                            <option value="">Tüm Fiyatlar</option>
+                            <option value="low" selected="@(Model.PriceFilter == "low")">0 - 1000 ₺</option>
+                            <option value="medium" selected="@(Model.PriceFilter == "medium")">1000 - 3000 ₺</option>
+                            <option value="high" selected="@(Model.PriceFilter == "high")">3000 ₺ üzeri</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="sortBy" class="form-label">Sıralama</label>
+                        <select class="form-select" id="sortBy" name="sortBy">
+                            <option value="">Varsayılan</option>
+                            <option value="name" selected="@(Model.SortBy == "name")">İsim (A-Z)</option>
+                            <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Fiyat (Düşük-Yüksek)</option>
+                            <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Fiyat (Yüksek-Düşük)</option>
+                            <option value="duration_asc" selected="@(Model.SortBy == "duration_asc")">Süre (Kısa-Uzun)</option>
+                            <option value="duration_desc" selected="@(Model.SortBy == "duration_desc")">Süre (Uzun-Kısa)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-primary">Uygula</button>
+                            <a href="@Url.Action("ViewAllMemberships")" class="btn btn-secondary">Sıfırla</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
-        <form method="get" asp-action="ViewAllMemberships">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label for="searchTerm" class="form-label">Arama</label>
-                    <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
-                           value="@Model.SearchTerm" placeholder="Başlık, açıklama veya tip ara...">
-                </div>
-                
-                <div class="col-md-2">
-                    <label for="typeFilter" class="form-label">Üyelik Tipi</label>
-                    <select class="form-select" id="typeFilter" name="typeFilter">
-                        <option value="all">Tüm Tipler</option>
-                        @foreach (var type in Model.AvailableTypes)
-                        {
-                            <option value="@type" selected="@(Model.TypeFilter == type)">@type</option>
-                        }
-                    </select>
-                </div>
-                
-                <div class="col-md-2">
-                    <label for="priceFilter" class="form-label">Fiyat Aralığı</label>
-                    <select class="form-select" id="priceFilter" name="priceFilter">
-                        <option value="">Tüm Fiyatlar</option>
-                        <option value="low" selected="@(Model.PriceFilter == "low")">0 - 1000 ₺</option>
-                        <option value="medium" selected="@(Model.PriceFilter == "medium")">1000 - 3000 ₺</option>
-                        <option value="high" selected="@(Model.PriceFilter == "high")">3000 ₺ üzeri</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-3">
-                    <label for="sortBy" class="form-label">Sıralama</label>
-                    <select class="form-select" id="sortBy" name="sortBy">
-                        <option value="">Varsayılan</option>
-                        <option value="name" selected="@(Model.SortBy == "name")">İsim (A-Z)</option>
-                        <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Fiyat (Düşük-Yüksek)</option>
-                        <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Fiyat (Yüksek-Düşük)</option>
-                        <option value="duration_asc" selected="@(Model.SortBy == "duration_asc")">Süre (Kısa-Uzun)</option>
-                        <option value="duration_desc" selected="@(Model.SortBy == "duration_desc")">Süre (Uzun-Kısa)</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary me-2">Uygula</button>
-                    <a href="@Url.Action("ViewAllMemberships")" class="btn btn-secondary">Sıfırla</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- Filtreleme sonucu -->
-<div class="mb-3">
-    <small class="text-muted">
-        Toplam @Model.Memberships.Count üyelik paketi bulundu
-        @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.TypeFilter) || !string.IsNullOrEmpty(Model.PriceFilter))
-        {
-            <span>- Filtre uygulanmış</span>
-        }
-    </small>
-</div>
-
-<!-- Üyelik Tablosu -->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Üyelik Id</th>
-            <th>Başlık</th>
-            <th>Açıklama</th>
-            <th>Süre (gün)</th>
-            <th>Resim</th>
-            <th>Fiyat</th>
-            <th>Tip</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Memberships.Count == 0)
-        {
-            <tr>
-                <td colspan="8" class="text-center text-muted">Arama kriterlerinize uygun üyelik paketi bulunamadı.</td>
-            </tr>
-        }
-        else
-        {
-            @foreach (var membership in Model.Memberships)
+    <!-- Filtreleme sonucu -->
+    <div class="mb-3">
+        <div class="alert alert-success" style="background-color: #f0fdf4; border-color: #bbf7d0; color: #059669;">
+            <strong>Sonuç:</strong> Toplam @Model.Memberships.Count üyelik paketi bulundu
+            @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.TypeFilter) || !string.IsNullOrEmpty(Model.PriceFilter))
             {
-                <tr>
-                    <td>@membership.Id</td>
-                    <td>@membership.Title</td>
-                    <td>@membership.Description</td>
-                    <td>@membership.DurationInDays</td>
-                    <td>
-                        @if (membership.Image != null && membership.Image.Length > 0)
-                        {
-                            <img src="data:image/png;base64,@Convert.ToBase64String(membership.Image)"
-                                alt="Üyelik Resmi" width="100" />
-                        }
-                        else
-                        {
-                            <span>Profil Resmi yok</span>
-                        }
-                    </td>
-                    <td>@membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</td>
-                    <td>@membership.Type</td>
-                    <td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a asp-controller="Membership" asp-action="Details" asp-route-id="@membership.Id" class="btn btn-sm btn-primary">Detaylar</a>
-                            <a asp-controller="Membership" asp-action="Edit" asp-route-id="@membership.Id" class="btn btn-sm btn-secondary">Düzenle</a>
-                            <a asp-controller="Membership" asp-action="Delete" asp-route-id="@membership.Id" class="btn btn-sm btn-danger">Sil</a>
-                        }
-                        else if (User.IsInRole("User"))
-                        {
-                            @if (Model.CurrentSubscription != null && Model.CurrentSubscription.MembershipId == membership.Id)
-                            {
-                                <!-- Aboneliği iptal et butonu -->
-                                <form asp-controller="Subscription"
-                                      asp-action="Cancel"
-                                      asp-route-id="@Model.CurrentSubscription.Id"
-                                      method="post"
-                                      style="display:inline;">
-                                    <button type="submit"
-                                            class="btn btn-sm btn-warning"
-                                            onclick="return confirm('Üyeliğinizi iptal etmek istediğinize emin misiniz?');">
-                                        Üyeliği İptal Et
-                                    </button>
-                                </form>
-                            }
-                            else if (Model.CurrentSubscription == null)
-                            {
-                                <!-- Hiç abonelik yoksa satın al butonu -->
-                                <a asp-controller="Subscription"
-                                   asp-action="Buy"
-                                   asp-route-id="@membership.Id"
-                                   class="btn btn-sm btn-success">
-                                    Satın Al
-                                </a>
-                            }
-                        }
-                    </td>
-                </tr>
+                <span> - Filtre aktif</span>
             }
-        }
-    </tbody>
-</table>
+        </div>
+    </div>
+
+    <!-- Üyelik Tablosu -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Üyelik Id</th>
+                    <th>Başlık</th>
+                    <th>Açıklama</th>
+                    <th>Süre (gün)</th>
+                    <th>Resim</th>
+                    <th>Fiyat</th>
+                    <th>Tip</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Memberships.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            <div class="alert alert-warning" style="margin: 1rem;">
+                                <i class="bi bi-exclamation-triangle"></i> Arama kriterlerinize uygun üyelik paketi bulunamadı.
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var membership in Model.Memberships)
+                    {
+                        <tr>
+                            <td>@membership.Id</td>
+                            <td><strong>@membership.Title</strong></td>
+                            <td>@membership.Description</td>
+                            <td>@membership.DurationInDays</td>
+                            <td class="text-center">
+                                @if (membership.Image != null && membership.Image.Length > 0)
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(membership.Image)"
+                                        alt="Üyelik Resmi" width="100" class="rounded" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Resim yok</span>
+                                }
+                            </td>
+                            <td><strong>@membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</strong></td>
+                            <td>
+                                <span class="badge bg-primary">@membership.Type</span>
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div class="btn-group" role="group">
+                                        <a asp-controller="Membership" asp-action="Details" asp-route-id="@membership.Id" 
+                                           class="btn btn-sm btn-primary" title="Detayları Görüntüle">
+                                            Detaylar
+                                        </a>
+                                        <a asp-controller="Membership" asp-action="Edit" asp-route-id="@membership.Id" 
+                                           class="btn btn-sm btn-secondary" title="Düzenle">
+                                            Düzenle
+                                        </a>
+                                        <a asp-controller="Membership" asp-action="Delete" asp-route-id="@membership.Id" 
+                                           class="btn btn-sm btn-danger" title="Sil"
+                                           onclick="return confirm('Bu üyelik paketini silmek istediğinizden emin misiniz?');">
+                                            Sil
+                                        </a>
+                                    </div>
+                                }
+                                else if (User.IsInRole("User"))
+                                {
+                                    @if (Model.CurrentSubscription != null && Model.CurrentSubscription.MembershipId == membership.Id)
+                                    {
+                                        <!-- Aboneliği iptal et butonu -->
+                                        <form asp-controller="Subscription"
+                                              asp-action="Cancel"
+                                              asp-route-id="@Model.CurrentSubscription.Id"
+                                              method="post"
+                                              style="display:inline;">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Üyeliğinizi iptal etmek istediğinize emin misiniz?');">
+                                                Üyeliği İptal Et
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (Model.CurrentSubscription == null)
+                                    {
+                                        <!-- Hiç abonelik yoksa satın al butonu -->
+                                        <a asp-controller="Subscription"
+                                           asp-action="Buy"
+                                           asp-route-id="@membership.Id"
+                                           class="btn btn-sm btn-primary">
+                                            Satın Al
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

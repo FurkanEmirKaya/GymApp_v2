@@ -4,52 +4,89 @@
     var subscription = ViewBag.Subscription as GymApp_v1.Data.Subscription;
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="admin-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Hoş geldin @Model.Username!</h2>
+        <a asp-action="EditProfile" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Profili Düzenle
+        </a>
     </div>
-}
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Hoş geldin @Model.Username!</h2>
-    <a asp-action="EditProfile" class="btn btn-primary">
-        <i class="bi bi-pencil-square"></i> Profili Düzenle
-    </a>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        @if (Model.ProfilePicture != null && Model.ProfilePicture.Length > 0)
-        {
-            <img src="data:image/png;base64,@Convert.ToBase64String(Model.ProfilePicture)" 
-                 class="img-fluid rounded" style="max-width: 250px;" />
-        }
-        else
-        {
-            <img src="~/images/placeholder.png" alt="Varsayılan Resim" 
-                 class="img-fluid rounded" style="max-width: 250px;" />
-        }
-    </div>
-    <div class="col-md-8">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Email:</strong> @Model.Email</li>
-            <li class="list-group-item"><strong>Kullanıcı Adı:</strong> @Model.Username</li>
-            <li class="list-group-item"><strong>Rol:</strong> @Model.Role</li>
-            @if (subscription != null)
-            {
-                <li class="list-group-item"><strong>Üyelik:</strong> @subscription.Membership.Title</li>
-                <li class="list-group-item"><strong>Süre:</strong> @subscription.Membership.DurationInDays gün</li>
-                <li class="list-group-item"><strong>Fiyat:</strong> @subscription.Membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</li>
-                <li class="list-group-item"><strong>Başlangıç:</strong> @subscription.StartDate.ToShortDateString()</li>
-                <li class="list-group-item"><strong>Bitiş:</strong> @subscription.EndDate.ToShortDateString()</li>
-            }
-            else
-            {
-                <li class="list-group-item"><strong>Üyelik:</strong> Yok</li>
-            }
-        </ul>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Profil Resmi</h5>
+                </div>
+                <div class="card-body text-center">
+                    @if (Model.ProfilePicture != null && Model.ProfilePicture.Length > 0)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(Model.ProfilePicture)"
+                             class="img-fluid rounded" style="max-width: 250px;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/placeholder.png" alt="Varsayılan Resim"
+                             class="img-fluid rounded" style="max-width: 250px;" />
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Profil Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+                        
+                        <dt class="col-sm-4">Kullanıcı Adı:</dt>
+                        <dd class="col-sm-8">@Model.Username</dd>
+                        
+                        <dt class="col-sm-4">Rol:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Model.Role</span>
+                        </dd>
+                        
+                        @if (subscription != null)
+                        {
+                            <dt class="col-sm-4">Üyelik:</dt>
+                            <dd class="col-sm-8">@subscription.Membership.Title</dd>
+                            
+                            <dt class="col-sm-4">Süre:</dt>
+                            <dd class="col-sm-8">@subscription.Membership.DurationInDays gün</dd>
+                            
+                            <dt class="col-sm-4">Fiyat:</dt>
+                            <dd class="col-sm-8">@subscription.Membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</dd>
+                            
+                            <dt class="col-sm-4">Başlangıç:</dt>
+                            <dd class="col-sm-8">@subscription.StartDate.ToShortDateString()</dd>
+                            
+                            <dt class="col-sm-4">Bitiş:</dt>
+                            <dd class="col-sm-8">@subscription.EndDate.ToShortDateString()</dd>
+                        }
+                        else
+                        {
+                            <dt class="col-sm-4">Üyelik:</dt>
+                            <dd class="col-sm-8">
+                                <span class="text-muted">Aktif üyelik bulunmuyor</span>
+                            </dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

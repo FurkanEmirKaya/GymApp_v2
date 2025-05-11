@@ -3,24 +3,23 @@
 }
 @using System.Security.Claims
 @inject GymApp_v1.Data.DataContext _layoutContext
-@inject GymApp_v1.Data.DataContext _layoutContext
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Fitness App</title>
+    <title>@ViewData["Title"] - GYM App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/_Layout.cshtml.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GymApp_v1.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     @if (!hideLayout)
     {
-        
-        string? email      = User.FindFirstValue(ClaimTypes.Email);
+        string? email = User.FindFirstValue(ClaimTypes.Email);
         byte[]? pictureData = null;
 
         if (!string.IsNullOrEmpty(email))
@@ -37,9 +36,12 @@
             : null;
 
         <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">GymApp_v1</a>
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-lightning-charge-fill me-2"></i>
+                        GYM App
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -50,41 +52,57 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListAllUsers">Kullanıcıları Yönet</a>
+                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListAllUsers">
+                                        <i class="bi bi-people-fill me-1"></i>Kullanıcıları Yönet
+                                    </a>
                                 </li>
                             }
                             @if (User.IsInRole("User"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Profile" asp-action="Dashboard">Profilim</a>
+                                    <a class="nav-link text-dark" asp-controller="Profile" asp-action="Dashboard">
+                                        <i class="bi bi-person-circle me-1"></i>Profilim
+                                    </a>
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Membership" asp-action="ViewAllMemberships">Üyelik Paketleri</a>
+                                <a class="nav-link text-dark" asp-controller="Membership" asp-action="ViewAllMemberships">
+                                    <i class="bi bi-card-list me-1"></i>Üyelik Paketleri
+                                </a>
                             </li>
                         </ul>
 
                         <ul class="navbar-nav">
                             @if (User.Identity?.IsAuthenticated == true)
                             {
-                                <li class="nav-item d-flex align-items-center">
+                                <li class="nav-item d-flex align-items-center profile-info">
                                     @if (!string.IsNullOrEmpty(pictureBase64))
                                     {
                                         <img src="data:image/png;base64,@pictureBase64"
-                                            class="rounded-circle me-2"
+                                            class="rounded-circle me-2 profile-avatar"
                                             width="32" height="32"
                                             alt="Profil Fotoğrafı" />
+                                    }
+                                    else
+                                    {
+                                        <div class="profile-gradient-avatar">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
                                     }
                                     <span class="nav-link text-dark">Merhaba, @User.Identity.Name</span>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Logout">Çıkış Yap</a>
+                                    <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Logout">
+                                        <i class="bi bi-box-arrow-right me-1"></i>Çıkış Yap
+                                    </a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Login">Giriş Yap</a>
+                                    <a class="nav-link text-dark" asp-controller="Authentication" asp-action="Login">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i>Giriş Yap
+                                    </a>
                                 </li>
                             }
                         </ul>
@@ -100,11 +118,23 @@
     }
     @if (!string.IsNullOrEmpty(infoMsg))
     {
-        <div class="alert alert-success">@infoMsg</div>
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                @infoMsg
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
     }
     @if (!string.IsNullOrEmpty(errorMsg))
     {
-        <div class="alert alert-danger">@errorMsg</div>
+        <div class="container mt-3">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                @errorMsg
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
     }
 
     <div class="container">
@@ -113,9 +143,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer mt-auto text-center">
         <div class="container">
-        © 2025 FitnesApp - Tüm hakları saklıdır.
+            <span class="footer-text">© 2025 GYM App - </span>
+            <span class="footer-slogan">Her Gün, Her Saat, Daha Güçlü</span>
         </div>
     </footer>
 

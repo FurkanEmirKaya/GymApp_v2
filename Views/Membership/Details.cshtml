@@ -1,46 +1,52 @@
 ﻿@model GymApp_v1.Data.Membership
-
 @{
     ViewData["Title"] = "Üyelik Detayları";
 }
 
-<h2>Üyelik Detayları</h2>
-
-<div class="card mb-4">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">Başlık</dt>
-            <dd class="col-sm-9">@Model.Title</dd>
-
-            <dt class="col-sm-3">Açıklama</dt>
-            <dd class="col-sm-9">@Model.Description</dd>
-
-            <dt class="col-sm-3">Süre (gün)</dt>
-            <dd class="col-sm-9">@Model.DurationInDays</dd>
-
-            <dt class="col-sm-3">Fiyat</dt>
-            <dd class="col-sm-9">@Model.Price ₺</dd>
-
-            <dt class="col-sm-3">Üyelik Tipi</dt>
-            <dd class="col-sm-9">@Model.Type</dd>
-
-            <dt class="col-sm-3">Görsel</dt>
-            <dd class="col-sm-9">
-                @if (Model.Image != null)
-                {
-                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" width="200" />
-                }
-                else
-                {
-                    <span>Görsel bulunamadı.</span>
-                }
-            </dd>
-        </dl>
+<div class="admin-container">
+    <h2>Üyelik Detayları</h2>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>@Model.Title</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Başlık</dt>
+                <dd class="col-sm-9">@Model.Title</dd>
+                
+                <dt class="col-sm-3">Açıklama</dt>
+                <dd class="col-sm-9">@Model.Description</dd>
+                
+                <dt class="col-sm-3">Süre (gün)</dt>
+                <dd class="col-sm-9">@Model.DurationInDays</dd>
+                
+                <dt class="col-sm-3">Fiyat</dt>
+                <dd class="col-sm-9">@Model.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</dd>
+                
+                <dt class="col-sm-3">Üyelik Tipi</dt>
+                <dd class="col-sm-9">
+                    <span class="badge bg-primary">@Model.Type</span>
+                </dd>
+                
+                <dt class="col-sm-3">Görsel</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Image != null)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" width="200" class="rounded" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Görsel bulunamadı.</span>
+                    }
+                </dd>
+            </dl>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
-    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Silmek istediğine emin misin?')">Sil</a>
-    <a asp-action="ViewAllMemberships" class="btn btn-secondary">Geri Dön</a>
+    
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Düzenle</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Silmek istediğine emin misin?')">Sil</a>
+        <a asp-action="ViewAllMemberships" class="btn btn-secondary">Geri Dön</a>
+    </div>
 </div>

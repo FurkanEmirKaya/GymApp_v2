@@ -3,176 +3,170 @@
     ViewData["Title"] = "Kullanıcı Listesi";
 }
 
-<a asp-controller="Admin" asp-action="CreateUsers" class="btn btn-sm btn-primary mb-3">Yeni Kullanıcı Ekle</a>
+<link rel="stylesheet" href="~/css/admin.css" />
 
-<!-- Arama ve Filtreleme Formu -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5>Arama ve Filtreleme</h5>
+<div class="admin-container">
+    <a asp-controller="Admin" asp-action="CreateUsers" class="btn btn-primary mb-3">
+        <i class="bi bi-person-plus me-1"></i>Yeni Kullanıcı Ekle
+    </a>
+
+    <!-- Arama ve Filtreleme Formu -->
+    <div class="card search-filter-section">
+        <div class="card-header">
+            <h5><i class="bi bi-funnel me-2"></i>Arama ve Filtreleme</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="ListAllUsers">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="searchTerm" class="form-label">Arama</label>
+                        <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
+                               value="@Model.SearchTerm" placeholder="Kullanıcı adı veya email ara...">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="roleFilter" class="form-label">Rol</label>
+                        <select class="form-select" id="roleFilter" name="roleFilter">
+                            <option value="all">Tüm Roller</option>
+                            @foreach (var role in Model.AvailableRoles)
+                            {
+                                <option value="@role" selected="@(Model.RoleFilter == role)">@role</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="membershipFilter" class="form-label">Üyelik Durumu</label>
+                        <select class="form-select" id="membershipFilter" name="membershipFilter">
+                            <option value="all">Tümü</option>
+                            <option value="active" selected="@(Model.MembershipFilter == "active")">Aktif Üyeliği Olanlar</option>
+                            <option value="none" selected="@(Model.MembershipFilter == "none")">Üyeliği Olmayanlar</option>
+                            @foreach (var membership in Model.AvailableMemberships)
+                            {
+                                <option value="@membership.Id" selected="@(Model.MembershipFilter == membership.Id.ToString())">
+                                    @membership.Title
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="sortBy" class="form-label">Sıralama</label>
+                        <select class="form-select" id="sortBy" name="sortBy">
+                            <option value="">Varsayılan</option>
+                            <option value="username" selected="@(Model.SortBy == "username")">Kullanıcı Adı (A-Z)</option>
+                            <option value="email" selected="@(Model.SortBy == "email")">Email (A-Z)</option>
+                            <option value="role" selected="@(Model.SortBy == "role")">Rol</option>
+                            <option value="newest" selected="@(Model.SortBy == "newest")">En Yeni</option>
+                            <option value="oldest" selected="@(Model.SortBy == "oldest")">En Eski</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-check-lg me-1"></i>Uygula
+                        </button>
+                        <a href="@Url.Action("ListAllUsers")" class="btn btn-secondary">
+                            <i class="bi bi-x-lg me-1"></i>Sıfırla
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
-        <form method="get" asp-action="ListAllUsers">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label for="searchTerm" class="form-label">Arama</label>
-                    <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
-                           value="@Model.SearchTerm" placeholder="Kullanıcı adı veya email ara...">
-                </div>
-                
-                <div class="col-md-2">
-                    <label for="roleFilter" class="form-label">Rol</label>
-                    <select class="form-select" id="roleFilter" name="roleFilter">
-                        <option value="all">Tüm Roller</option>
-                        @foreach (var role in Model.AvailableRoles)
-                        {
-                            <option value="@role" selected="@(Model.RoleFilter == role)">@role</option>
-                        }
-                    </select>
-                </div>
-                
-                <div class="col-md-3">
-                    <label for="membershipFilter" class="form-label">Üyelik Durumu</label>
-                    <select class="form-select" id="membershipFilter" name="membershipFilter">
-                        <option value="all">Tümü</option>
-                        <option value="active" selected="@(Model.MembershipFilter == "active")">Aktif Üyeliği Olanlar</option>
-                        <option value="none" selected="@(Model.MembershipFilter == "none")">Üyeliği Olmayanlar</option>
-                        @foreach (var membership in Model.AvailableMemberships)
-                        {
-                            <option value="@membership.Id" selected="@(Model.MembershipFilter == membership.Id.ToString())">
-                                @membership.Title
-                            </option>
-                        }
-                    </select>
-                </div>
-                
-                <div class="col-md-2">
-                    <label for="sortBy" class="form-label">Sıralama</label>
-                    <select class="form-select" id="sortBy" name="sortBy">
-                        <option value="">Varsayılan</option>
-                        <option value="username" selected="@(Model.SortBy == "username")">Kullanıcı Adı (A-Z)</option>
-                        <option value="email" selected="@(Model.SortBy == "email")">Email (A-Z)</option>
-                        <option value="role" selected="@(Model.SortBy == "role")">Rol</option>
-                        <option value="newest" selected="@(Model.SortBy == "newest")">En Yeni</option>
-                        <option value="oldest" selected="@(Model.SortBy == "oldest")">En Eski</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary me-2">Uygula</button>
-                    <a href="@Url.Action("ListAllUsers")" class="btn btn-secondary">Sıfırla</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- Filtreleme sonucu -->
-<div class="mb-3">
-    <small class="text-muted">
-        Toplam @Model.Users.Count kullanıcı bulundu
-        @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.RoleFilter) || !string.IsNullOrEmpty(Model.MembershipFilter))
-        {
-            <span>- Filtre uygulanmış</span>
-        }
-    </small>
-</div>
-
-<!-- Kullanıcı Tablosu -->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Kullanıcı Adı</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Üyelik</th>
-            <th>Fiyat</th>
-            <th>Başlangıç</th>
-            <th>Bitiş</th>
-            <th>Profil Resmi</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Users.Count == 0)
-        {
-            <tr>
-                <td colspan="9" class="text-center text-muted">Arama kriterlerinize uygun kullanıcı bulunamadı.</td>
-            </tr>
-        }
-        else
-        {
-            @foreach (var user in Model.Users)
+    <!-- Filtreleme sonucu -->
+    <div class="mb-3">
+        <small class="text-muted">
+            Toplam <strong>@Model.Users.Count</strong> kullanıcı bulundu
+            @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.RoleFilter) || !string.IsNullOrEmpty(Model.MembershipFilter))
             {
-                var latestSub = user.Subscriptions?.OrderByDescending(s => s.StartDate).FirstOrDefault();
-                <tr class="@(latestSub?.EndDate < DateTime.Now ? "table-warning" : "")">
-                    <td>@user.Username</td>
-                    <td>@user.Email</td>
-                    <td>
-                        <span class="badge bg-@(user.Role == "Admin" ? "danger" : "primary")">@user.Role</span>
-                    </td>
-                    <td>@(latestSub?.Membership?.Title ?? "Üyelik Yok")</td>
-                    <td>@(latestSub?.Membership?.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR")) ?? "- ₺")</td>
-                    <td>@(latestSub?.StartDate.ToShortDateString() ?? "-")</td>
-                    <td>
-                        @if (latestSub != null)
-                        {
-                            <span class="@(latestSub.EndDate < DateTime.Now ? "text-danger" : "")">
-                                @latestSub.EndDate.ToShortDateString()
-                            </span>
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
-                    </td>
-                    <td>
-                        @if (user.ProfilePicture != null && user.ProfilePicture.Length > 0)
-                        {
-                            var base64 = Convert.ToBase64String(user.ProfilePicture);
-                            <img src="data:image/png;base64,@base64" width="50" class="rounded" />
-                        }
-                        else
-                        {
-                            <img src="~/images/placeholder.png" alt="Varsayılan Resim" width="50" class="rounded" />
-                        }
-                    </td>
-                    <td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <div class="btn-group" role="group">
-                                <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" 
-                                   class="btn btn-sm btn-secondary" title="Düzenle">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" 
-                                   class="btn btn-sm btn-danger" title="Sil">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
-                        }
-                    </td>
-                </tr>
+                <span> - Filtre uygulanmış</span>
             }
-        }
-    </tbody>
-</table>
+        </small>
+    </div>
 
-<style>
-    .table tbody tr.table-warning {
-        background-color: #fff3cd;
-    }
-    
-    .btn-group .btn {
-        border-radius: 0;
-    }
-    
-    .btn-group .btn:first-child {
-        border-top-left-radius: 0.375rem;
-        border-bottom-left-radius: 0.375rem;
-    }
-    
-    .btn-group .btn:last-child {
-        border-top-right-radius: 0.375rem;
-        border-bottom-right-radius: 0.375rem;
-    }
-</style>
+    <!-- Kullanıcı Tablosu -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Kullanıcı Adı</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Üyelik</th>
+                    <th>Fiyat</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>Profil Resmi</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Users.Count == 0)
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">
+                            <i class="bi bi-info-circle me-2"></i>Arama kriterlerinize uygun kullanıcı bulunamadı.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var user in Model.Users)
+                    {
+                        var latestSub = user.Subscriptions?.OrderByDescending(s => s.StartDate).FirstOrDefault();
+                        <tr class="@(latestSub?.EndDate < DateTime.Now ? "table-warning" : "")">
+                            <td>@user.Username</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge bg-@(user.Role == "Admin" ? "danger" : "primary")">@user.Role</span>
+                            </td>
+                            <td>@(latestSub?.Membership?.Title ?? "Üyelik Yok")</td>
+                            <td>@(latestSub?.Membership?.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR")) ?? "- ₺")</td>
+                            <td>@(latestSub?.StartDate.ToShortDateString() ?? "-")</td>
+                            <td>
+                                @if (latestSub != null)
+                                {
+                                    <span class="@(latestSub.EndDate < DateTime.Now ? "text-danger" : "")">
+                                        @latestSub.EndDate.ToShortDateString()
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (user.ProfilePicture != null && user.ProfilePicture.Length > 0)
+                                {
+                                    var base64 = Convert.ToBase64String(user.ProfilePicture);
+                                    <img src="data:image/png;base64,@base64" width="50" class="rounded" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/placeholder.png" alt="Varsayılan Resim" width="50" class="rounded" />
+                                }
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div class="btn-group" role="group">
+                                        <a asp-controller="Admin" asp-action="EditUser" asp-route-id="@user.Id" 
+                                           class="btn btn-sm btn-secondary" title="Düzenle">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" 
+                                           class="btn btn-sm btn-danger" title="Sil">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
