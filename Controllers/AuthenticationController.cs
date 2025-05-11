@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using GymApp_v1.Models;
 using Microsoft.AspNetCore.Identity;
+using GymApp_v1.ViewModels;
 
 namespace GymApp_v1.Controllers
 {
@@ -30,17 +31,22 @@ namespace GymApp_v1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             
             if (user == null)
             {
-                ViewBag.Error = "E-mail bulunamadı.";
-                return View();
+                ModelState.AddModelError("Email", "Bu email adresi sistemde kayıtlı değil.");
+                return View(model);
             }
             
-            var result = _hasher.VerifyHashedPassword(user, user.Password, password);
+            var result = _hasher.VerifyHashedPassword(user, user.Password, model.Password);
             if (result == PasswordVerificationResult.Success)
             {
                 var claims = new List<Claim>
@@ -48,18 +54,22 @@ namespace GymApp_v1.Controllers
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role),
-                    new Claim("UserId", user.Id.ToString()) // ID'yi de ekleyin
+                    new Claim("UserId", user.Id.ToString())
                 };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = model.RememberMe, // Beni hatırla seçeneği
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(model.RememberMe ? 30 : 1)
+                };
 
-                // ✅ Giriş başarılıysa role göre yönlendirme
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+
                 if (user.Role == "Admin")
                 {
-                    // AdminController için route attribute'ü kullandığınız için
                     return Redirect("/Admin/ListAllUsers");
                 }
                 else
@@ -68,8 +78,8 @@ namespace GymApp_v1.Controllers
                 }
             }
 
-            ViewBag.Error = "Geçersiz email veya şifre";
-            return View();
+            ModelState.AddModelError("Password", "Şifre yanlış.");
+            return View(model);
         }
 
 
@@ -79,51 +89,50 @@ namespace GymApp_v1.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpPost]
+       [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
             
-            if (ModelState.IsValid)
+            // Email kontrolü
+            var userExists = _context.Users.Any(u => u.Email == model.Email);
+            if (userExists)
             {
-                var userExists = _context.Users.Any(u => u.Email == model.Email);
-                if (userExists)
-                {
-                    ModelState.AddModelError("", "Bu e-posta ile zaten kayıt olunmuş.");
-                    return View(model);
-                }
-                var hashedPassword = _hasher.HashPassword(null!, model.Password);
-                var newUser = new User
-                {
-                    Username = model.Email.Split('@')[0],
-                    Email = model.Email,
-                    Role = "User",
-                    Password = hashedPassword
-                };
-
-                newUser.Password = _hasher.HashPassword(newUser, model.Password);
-                
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync(); // BURASI DB'ye kaydeder
-
-                // Otomatik giriş için cookie oluştur
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, newUser.Username),
-            new Claim(ClaimTypes.Email, newUser.Email),
-            new Claim(ClaimTypes.Role, newUser.Role)
-        };
-
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                return RedirectToAction("Login", "Authentication");
+                ModelState.AddModelError("Email", "Bu e-posta ile zaten kayıt olunmuş.");
+                return View(model);
             }
+            
+            var newUser = new User
+            {
+                Username = model.Email.Split('@')[0],
+                Email = model.Email,
+                Role = "User",
+                Password = string.Empty // Geçici değer
+            };
 
-            return View(model);
+            // Şifreyi hash'le
+            newUser.Password = _hasher.HashPassword(newUser, model.Password);
+            
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            // Otomatik giriş için cookie oluştur
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, newUser.Username),
+                new Claim(ClaimTypes.Email, newUser.Email),
+                new Claim(ClaimTypes.Role, newUser.Role),
+                new Claim("UserId", newUser.Id.ToString())
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            // Başarılı kayıt sonrası dashboard'a yönlendir
+            return RedirectToAction("Dashboard", "Profile");
         }
 
         [HttpGet]

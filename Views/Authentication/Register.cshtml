@@ -1,27 +1,67 @@
-﻿@{
+﻿@model GymApp_v1.Models.RegisterViewModel
+@{
     ViewData["Title"] = "Kayıt Ol";
     ViewData["HideLayout"] = true;
 }
-@model GymApp_v1.Models.RegisterViewModel
 
-@{
-    ViewData["Title"] = "Kayıt Ol";
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">Kayıt Ol</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Genel hata mesajları için -->
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <!-- Model validation summary -->
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <form asp-action="Register" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Şifre</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="En az 6 karakter" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label">Şifre Tekrar</label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifrenizi tekrar girin" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="row g-2">
+                            <div class="col-12 col-sm-6">
+                                <button type="submit" class="btn btn-success w-100">Kayıt Ol</button>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <a asp-action="Login" class="btn btn-secondary w-100">Geri Dön</a>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <a asp-action="Login" class="text-decoration-none">Zaten hesabınız var mı? Giriş yapın</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-
-<h2>Kayıt Ol</h2>
-
-<form asp-action="Register" method="post">
-    <div class="mb-2">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="mb-2">
-        <label>Şifre</label>
-        <input asp-for="Password" type="password" class="form-control" />
-    </div>
-    <div class="mb-2">
-        <label>Şifre Tekrar</label>
-        <input asp-for="ConfirmPassword" type="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-success">Kayıt Ol</button>
-</form>
