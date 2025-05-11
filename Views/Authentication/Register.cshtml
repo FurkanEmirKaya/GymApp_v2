@@ -4,64 +4,169 @@
     ViewData["HideLayout"] = true;
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <!-- Welcome Message -->
+            <div class="welcome-header">
+                <h1 class="welcome-title">GYM App'e Katılın!</h1>
+                <p class="welcome-subtitle">Fitness yolculuğunuza bugün başlayın</p>
+            </div>
+
+            <!-- Success/Error Messages -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            
+            <!-- Register Card -->
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="text-center mb-0">Kayıt Ol</h2>
+                <div class="card-header">
+                    <h3>
+                        <i class="bi bi-person-plus-fill me-2"></i>
+                        Yeni Hesap Oluştur
+                    </h3>
                 </div>
                 <div class="card-body">
-                    <!-- Genel hata mesajları için -->
+                    <!-- ViewBag Error -->
                     @if (ViewBag.Error != null)
                     {
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-circle me-2"></i>
                             @ViewBag.Error
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-
-                    <!-- Model validation summary -->
+                    
+                    <!-- Validation Summary -->
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
+                    
                     <form asp-action="Register" method="post">
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <label asp-for="Email" class="form-label">
+                                <i class="bi bi-envelope me-1"></i>Email Adresi
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-at"></i>
+                                </span>
+                                <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
                         
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Şifre</label>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="En az 6 karakter" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <label asp-for="Password" class="form-label">
+                                <i class="bi bi-key me-1"></i>Şifre
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="En az 6 karakter" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
                         
-                        <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Şifre Tekrar</label>
-                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifrenizi tekrar girin" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword" class="form-label">
+                                <i class="bi bi-check-lg me-1"></i>Şifre Tekrar
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-shield-check"></i>
+                                </span>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifrenizi tekrar girin" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                         </div>
                         
-                        <div class="row g-2">
+                        <div class="row g-2 mb-3">
                             <div class="col-12 col-sm-6">
-                                <button type="submit" class="btn btn-success w-100">Kayıt Ol</button>
+                                <button type="submit" class="btn btn-primary w-100" id="registerBtn">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    <span>Kayıt Ol</span>
+                                </button>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <a asp-action="Login" class="btn btn-secondary w-100">Geri Dön</a>
+                                <a asp-action="Login" class="btn btn-link w-100" style="border: 1px solid #3f3f46; padding: 0.6rem 1rem;">
+                                    <i class="bi bi-arrow-left me-2"></i>Geri Dön
+                                </a>
                             </div>
                         </div>
                     </form>
                     
-                    <div class="text-center mt-3">
-                        <a asp-action="Login" class="text-decoration-none">Zaten hesabınız var mı? Giriş yapın</a>
+                    <div class="divider">
+                        <span>veya</span>
                     </div>
+                    
+                    <div class="text-center">
+                        <small style="color: #a1a1aa;">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Zaten hesabınız var mı? <a asp-action="Login" class="btn btn-link" style="padding: 0; color: #a78bfa;">Giriş yapın</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Info Card -->
+            <div class="card mt-4">
+                <div class="card-body text-center py-3">
+                    <small style="color: #71717a;">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Bilgileriniz güvenli bir şekilde saklanır.
+                    </small>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script>
+        // Form submit animation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.getElementById('registerBtn');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Kayıt yapılıyor...';
+            btn.disabled = true;
+            
+            // Reset button if validation fails
+            setTimeout(() => {
+                if (!this.checkValidity() && this.querySelector('.text-danger:not(:empty)')) {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -32,5 +32,8 @@ namespace GymApp_v1.Data
 
         public List<Subscription> Subscriptions { get; set; } = new();
 
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpires { get; set; }
+
     }
 }

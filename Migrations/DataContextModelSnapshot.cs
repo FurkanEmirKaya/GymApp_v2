@@ -97,6 +97,12 @@ namespace GymApp_v1.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpires")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("longblob");
 

@@ -6,6 +6,9 @@ using System.Security.Claims;
 using GymApp_v1.Models;
 using Microsoft.AspNetCore.Identity;
 using GymApp_v1.ViewModels;
+using GymApp_v2.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace GymApp_v1.Controllers
 {
@@ -13,11 +16,13 @@ namespace GymApp_v1.Controllers
     {
         private readonly DataContext _context;
         private readonly IPasswordHasher<User> _hasher;
-        public AuthenticationController(DataContext context,  IPasswordHasher<User> hasher)
-        {
-            _context = context;
-            _hasher = hasher;
-        }
+            private readonly IEmailService _emailService;
+    public AuthenticationController(DataContext context, IPasswordHasher<User> hasher, IEmailService emailService)
+    {
+        _context = context;
+        _hasher = hasher;
+        _emailService = emailService;
+    }
 
         [HttpGet]
         public IActionResult Login()
@@ -142,44 +147,122 @@ namespace GymApp_v1.Controllers
         }
 
         [HttpPost]
-        public IActionResult ForgotPassword(string email)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (user == null)
-            {
-                ViewBag.Error = "Bu e-posta sistemde bulunamadı.";
-                return View();
-            }
-
-            // Email doğruysa reset sayfasına yönlendir
-            return View("ResetPassword", new ResetPasswordViewModel { 
-                Email = email,
-                NewPassword = string.Empty,
-                ConfirmPassword = string.Empty
-            });        
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
-                ViewBag.Error = "Kullanıcı bulunamadı.";
-                return View(model);
+                // Güvenlik için kullanıcıya email bulunamadığını söylemeyin
+                // Başarılı mesajı gösterin
+                TempData["SuccessMessage"] = "Eğer bu email adresi sistemde kayıtlı ise, şifre sıfırlama bağlantısı gönderilecektir.";
+                return RedirectToAction("Login");
             }
 
-            user.Password = _hasher.HashPassword(user, model.NewPassword); 
+            // Token oluştur
+            var token = GeneratePasswordResetToken();
+            user.PasswordResetToken = token;
+            user.PasswordResetTokenExpires = DateTime.UtcNow.AddHours(24); // 24 saat geçerli
+
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Login", "Authentication");
+            // Reset bağlantısı oluştur - null reference kontrolü ekleyin
+            var resetLink = Url.Action("ResetPassword", "Authentication", 
+                new { token = token }, Request.Scheme);
+            
+            if (string.IsNullOrEmpty(resetLink))
+            {
+                TempData["ErrorMessage"] = "Şifre sıfırlama bağlantısı oluşturulamadı.";
+                return RedirectToAction("Login");
+            }
+
+            // Email gönder
+            try
+            {
+                await _emailService.SendPasswordResetEmailAsync(user.Email, resetLink);
+                TempData["SuccessMessage"] = "Şifre sıfırlama bağlantısı email adresinize gönderildi.";
+            }
+            catch (Exception ex)
+            {
+                // Log the error - ex kullanımı için
+                Console.WriteLine($"Email gönderimi hatası: {ex.Message}");
+                // veya logger kullanın:
+                // _logger.LogError(ex, "Email gönderimi sırasında hata oluştu");
+                
+                TempData["ErrorMessage"] = "Email gönderimi sırasında bir hata oluştu. Lütfen tekrar deneyin.";
+            }
+
+            return RedirectToAction("Login");
         }
 
+
+    [HttpGet]
+    public async Task<IActionResult> ResetPassword(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            return RedirectToAction("Login");
+        }
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => 
+            u.PasswordResetToken == token && 
+            u.PasswordResetTokenExpires > DateTime.UtcNow);
+
+        if (user == null)
+        {
+            TempData["ErrorMessage"] = "Geçersiz veya süresi dolmuş token.";
+            return RedirectToAction("Login");
+        }
+
+        var model = new ResetPasswordViewModel
+        {
+            Email = user.Email,
+            NewPassword = string.Empty,  // required property'yi set edin
+            ConfirmPassword = string.Empty,  // required property'yi set edin
+            Token = token  // Token'ı set edin
+        };
+
+        return View(model);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => 
+            u.PasswordResetToken == model.Token && 
+            u.PasswordResetTokenExpires > DateTime.UtcNow);
+
+        if (user == null)
+        {
+            ModelState.AddModelError("", "Geçersiz veya süresi dolmuş token.");
+            return View(model);
+        }
+
+        user.Password = _hasher.HashPassword(user, model.NewPassword);
+        user.PasswordResetToken = null;
+        user.PasswordResetTokenExpires = null;
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
+        return RedirectToAction("Login");
+    }
+
+    private string GeneratePasswordResetToken()
+    {
+        using var rng = RandomNumberGenerator.Create();
+        var bytes = new byte[32];
+        rng.GetBytes(bytes);
+        return Convert.ToBase64String(bytes).Replace("+", "-").Replace("/", "_").TrimEnd('=');
+    }
+}
 }
