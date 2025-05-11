@@ -29,7 +29,6 @@ namespace GymApp_v1.Controllers
             return View(); // bu Register.cshtml'i döndürür
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -40,16 +39,17 @@ namespace GymApp_v1.Controllers
                 ViewBag.Error = "E-mail bulunamadı.";
                 return View();
             }
+            
             var result = _hasher.VerifyHashedPassword(user, user.Password, password);
-            if (result == PasswordVerificationResult.Success) {
-            if (user != null)
+            if (result == PasswordVerificationResult.Success)
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim("UserId", user.Id.ToString()) // ID'yi de ekleyin
+                };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
@@ -58,16 +58,19 @@ namespace GymApp_v1.Controllers
 
                 // ✅ Giriş başarılıysa role göre yönlendirme
                 if (user.Role == "Admin")
-                    return RedirectToAction("ListAllUsers", "Admin");
+                {
+                    // AdminController için route attribute'ü kullandığınız için
+                    return Redirect("/Admin/ListAllUsers");
+                }
                 else
+                {
                     return RedirectToAction("Dashboard", "Profile");
-            }
+                }
             }
 
             ViewBag.Error = "Geçersiz email veya şifre";
             return View();
         }
-
 
 
         public async Task<IActionResult> Logout()

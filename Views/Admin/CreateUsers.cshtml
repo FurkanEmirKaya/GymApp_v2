@@ -1,0 +1,55 @@
+@model GymApp_v1.ViewModels.UserViewModel
+@{
+    ViewData["Title"] = "Yeni Kullanıcı Ekle";
+}
+
+<h2>Yeni Kullanıcı Ekle</h2>
+
+<form asp-controller="Admin" asp-action="CreateUsers" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Şifre</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Role" class="form-label">Rol</label>
+        <select asp-for="Role" class="form-control" asp-items="ViewBag.Roles">
+            <option value="">Rol Seçin</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="MembershipId" class="form-label">Üyelik</label>
+        <select asp-for="MembershipId" class="form-control" asp-items="ViewBag.Memberships">
+            <option value="">Üyelik Seçin (İsteğe Bağlı)</option>
+        </select>
+        <span asp-validation-for="MembershipId" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProfilePicture" class="form-label">Profil Resmi</label>
+        <input asp-for="ProfilePicture" type="file" class="form-control" />
+        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="ListAllUsers" class="btn btn-secondary">Geri Dön</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

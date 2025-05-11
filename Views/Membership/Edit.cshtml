@@ -1,46 +1,35 @@
 ﻿@model GymApp_v1.Data.Membership
-
 @{
     ViewData["Title"] = "Üyelik Düzenle";
 }
-
 <h2>Üyelik Düzenle</h2>
-
 <form asp-controller="Membership" asp-action="Edit" method="post" enctype="multipart/form-data">
-
-
     <input type="hidden" asp-for="Id" />
-
     <div class="mb-3">
         <label asp-for="Title" class="form-label">Başlık</label>
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
         <label asp-for="Description" class="form-label">Açıklama</label>
         <textarea asp-for="Description" class="form-control"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
         <label asp-for="DurationInDays" class="form-label">Üyelik Süresi (gün)</label>
-        <input asp-for="DurationInDays" class="form-control" />
+        <input asp-for="DurationInDays" class="form-control" type="number" min="0" />
         <span asp-validation-for="DurationInDays" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
         <label asp-for="Price" class="form-label">Fiyat (₺)</label>
-        <input asp-for="Price" class="form-control" />
+        <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
         <label asp-for="Type" class="form-label">Üyelik Tipi</label>
         <input asp-for="Type" class="form-control" />
         <span asp-validation-for="Type" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
         <label class="form-label">Güncel Resim</label><br />
         @if (Model.Image != null)
@@ -48,12 +37,10 @@
             <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)" width="120" />
         }
     </div>
-
     <div class="mb-3">
         <label class="form-label">Yeni Resim Yükle (isteğe bağlı)</label>
         <input type="file" name="newImage" class="form-control" />
     </div>
-
     <button type="submit" class="btn btn-primary">Kaydet</button>
     <a asp-action="ViewAllMemberships" class="btn btn-secondary">Geri Dön</a>
 </form>

@@ -35,5 +35,13 @@ namespace GymApp_v1.Data
         public required string Type { get; set; }
 
         public List<User> Users { get; set; }
+
+            public Membership()
+            {
+                Title = string.Empty;
+                Description = string.Empty;
+                Type = string.Empty;
+                Users = new List<User>();
+            }
     }
 }

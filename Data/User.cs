@@ -32,6 +32,5 @@ namespace GymApp_v1.Data
 
         public List<Subscription> Subscriptions { get; set; } = new();
 
-
     }
 }

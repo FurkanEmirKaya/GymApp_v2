@@ -1,0 +1,28 @@
+@model GymApp_v1.Data.User
+@{
+    ViewData["Title"] = "Kullanıcı Sil";
+}
+
+<h2>Kullanıcı Silme Onayı</h2>
+
+<div class="alert alert-danger">
+    <h4>Dikkat!</h4>
+    <p>Bu kullanıcıyı silmek üzeresiniz. Bu işlem geri alınamaz.</p>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-2">Email</dt>
+    <dd class="col-sm-10">@Model.Email</dd>
+    
+    <dt class="col-sm-2">Kullanıcı Adı</dt>
+    <dd class="col-sm-10">@Model.Username</dd>
+    
+    <dt class="col-sm-2">Rol</dt>
+    <dd class="col-sm-10">@Model.Role</dd>
+</dl>
+
+<form asp-controller="Admin" asp-action="DeleteUser" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+    <a asp-action="ListAllUsers" class="btn btn-secondary">İptal</a>
+</form>
