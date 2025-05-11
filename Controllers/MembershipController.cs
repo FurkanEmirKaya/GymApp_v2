@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using GymApp_v1.Data;
+using GymApp_v1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,18 +18,92 @@ namespace efCoreApp.AddControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewAllMemberships()
+        public async Task<IActionResult> ViewAllMemberships(string? searchTerm, string? typeFilter, string? priceFilter, string? sortBy)
         {
-            var memberships = await _context.Memberships.ToListAsync();
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             
+            // Subscription kontrolü
             var subscription = await _context.Subscriptions
                 .Where(s => s.User.Email == userEmail && s.EndDate > DateTime.Now)
-                .FirstOrDefaultAsync(); 
+                .FirstOrDefaultAsync();
+            
+            // Tüm memberships'leri başlangıçta al
+            var membershipsQuery = _context.Memberships.AsQueryable();
+            
+            // Arama
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                membershipsQuery = membershipsQuery.Where(m => 
+                    m.Title.Contains(searchTerm) || 
+                    m.Description.Contains(searchTerm) ||
+                    m.Type.Contains(searchTerm));
+            }
+            
+            // Tip filtreleme
+            if (!string.IsNullOrEmpty(typeFilter) && typeFilter != "all")
+            {
+                membershipsQuery = membershipsQuery.Where(m => m.Type == typeFilter);
+            }
+            
+            // Fiyat filtreleme
+            if (!string.IsNullOrEmpty(priceFilter))
+            {
+                switch (priceFilter)
+                {
+                    case "low":
+                        membershipsQuery = membershipsQuery.Where(m => m.Price < 1000);
+                        break;
+                    case "medium":
+                        membershipsQuery = membershipsQuery.Where(m => m.Price >= 1000 && m.Price <= 3000);
+                        break;
+                    case "high":
+                        membershipsQuery = membershipsQuery.Where(m => m.Price > 3000);
+                        break;
+                }
+            }
+            
+            // Sıralama
+            switch (sortBy)
+            {
+                case "price_asc":
+                    membershipsQuery = membershipsQuery.OrderBy(m => m.Price);
+                    break;
+                case "price_desc":
+                    membershipsQuery = membershipsQuery.OrderByDescending(m => m.Price);
+                    break;
+                case "duration_asc":
+                    membershipsQuery = membershipsQuery.OrderBy(m => m.DurationInDays);
+                    break;
+                case "duration_desc":
+                    membershipsQuery = membershipsQuery.OrderByDescending(m => m.DurationInDays);
+                    break;
+                case "name":
+                    membershipsQuery = membershipsQuery.OrderBy(m => m.Title);
+                    break;
+                default:
+                    membershipsQuery = membershipsQuery.OrderBy(m => m.Id);
+                    break;
+            }
+            
+            var memberships = await membershipsQuery.ToListAsync();
+            var availableTypes = await _context.Memberships
+                .Select(m => m.Type)
+                .Distinct()
+                .ToListAsync();
+            
+            var viewModel = new MembershipFilterViewModel
+            {
+                SearchTerm = searchTerm,
+                TypeFilter = typeFilter,
+                PriceFilter = priceFilter,
+                SortBy = sortBy,
+                Memberships = memberships,
+                AvailableTypes = availableTypes,
+                CurrentSubscription = subscription
+            };
             
             ViewBag.Subscription = subscription;
-            
-            return View(memberships);
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]

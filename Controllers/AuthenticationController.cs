@@ -105,7 +105,7 @@ namespace GymApp_v1.Controllers
                 newUser.Password = _hasher.HashPassword(newUser, model.Password);
                 
                 _context.Users.Add(newUser);
-                await _context.SaveChangesAsync(); // ✅ BURASI DB'ye kaydeder
+                await _context.SaveChangesAsync(); // BURASI DB'ye kaydeder
 
                 // Otomatik giriş için cookie oluştur
                 var claims = new List<Claim>
@@ -143,7 +143,11 @@ namespace GymApp_v1.Controllers
             }
 
             // Email doğruysa reset sayfasına yönlendir
-            return View("ResetPassword", new ResetPasswordViewModel { Email = email });
+            return View("ResetPassword", new ResetPasswordViewModel { 
+                Email = email,
+                NewPassword = string.Empty,
+                ConfirmPassword = string.Empty
+            });        
         }
 
 
