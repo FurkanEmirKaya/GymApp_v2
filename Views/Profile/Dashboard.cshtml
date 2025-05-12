@@ -4,83 +4,89 @@
     var subscription = ViewBag.Subscription as GymApp_v1.Data.Subscription;
 }
 
+<!-- Sayfa için admin.css stil dosyasını ekleyelim -->
+<link rel="stylesheet" href="~/css/admin.css" />
+
 <div class="admin-container">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Hoş geldin @Model.Username!</h2>
-        <a asp-action="EditProfile" class="btn btn-primary">
-            <i class="bi bi-pencil-square"></i> Profili Düzenle
+        <h2><i class="bi bi-person-circle me-2"></i>Hoş geldin @Model.Username!</h2>
+        <a href="#" class="btn btn-primary">
+            <i class="bi bi-pencil-square me-1"></i> Profili Düzenle
         </a>
     </div>
-    
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Profil Resmi</h5>
-                </div>
-                <div class="card-body text-center">
+   
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="bi bi-info-circle me-2"></i>Kullanıcı Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center mb-3 mb-md-0">
                     @if (Model.ProfilePicture != null && Model.ProfilePicture.Length > 0)
                     {
                         <img src="data:image/png;base64,@Convert.ToBase64String(Model.ProfilePicture)"
-                             class="img-fluid rounded" style="max-width: 250px;" />
+                             class="img-fluid rounded profile-image" alt="Profil Resmi" />
                     }
                     else
                     {
-                        <img src="~/images/placeholder.png" alt="Varsayılan Resim"
-                             class="img-fluid rounded" style="max-width: 250px;" />
+                        <div class="profile-placeholder">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
                     }
                 </div>
-            </div>
-        </div>
-        
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Profil Bilgileri</h5>
-                </div>
-                <div class="card-body">
+                <div class="col-md-9">
                     <dl class="row">
-                        <dt class="col-sm-4">Email:</dt>
-                        <dd class="col-sm-8">@Model.Email</dd>
-                        
-                        <dt class="col-sm-4">Kullanıcı Adı:</dt>
-                        <dd class="col-sm-8">@Model.Username</dd>
-                        
-                        <dt class="col-sm-4">Rol:</dt>
-                        <dd class="col-sm-8">
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+                       
+                        <dt class="col-sm-3">Kullanıcı Adı:</dt>
+                        <dd class="col-sm-9">@Model.Username</dd>
+                       
+                        <dt class="col-sm-3">Rol:</dt>
+                        <dd class="col-sm-9">
                             <span class="badge bg-primary">@Model.Role</span>
+                        </dd>
+                       
+                        <dt class="col-sm-3">Üyelik:</dt>
+                        <dd class="col-sm-9">
+                            @if (subscription != null)
+                            {
+                                <span class="badge bg-success">@subscription.Membership.Title</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Aktif üyelik bulunmuyor</span>
+                                <a href="/Membership/ViewAllMemberships" class="btn btn-sm btn-primary ms-2">
+                                    <i class="bi bi-cart-plus me-1"></i>Üyelik Satın Al
+                                </a>
+                            }
                         </dd>
                         
                         @if (subscription != null)
                         {
-                            <dt class="col-sm-4">Üyelik:</dt>
-                            <dd class="col-sm-8">@subscription.Membership.Title</dd>
+                            <dt class="col-sm-3">Süre:</dt>
+                            <dd class="col-sm-9">@subscription.Membership.DurationInDays gün</dd>
                             
-                            <dt class="col-sm-4">Süre:</dt>
-                            <dd class="col-sm-8">@subscription.Membership.DurationInDays gün</dd>
+                            <dt class="col-sm-3">Fiyat:</dt>
+                            <dd class="col-sm-9">@subscription.Membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</dd>
                             
-                            <dt class="col-sm-4">Fiyat:</dt>
-                            <dd class="col-sm-8">@subscription.Membership.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</dd>
+                            <dt class="col-sm-3">Başlangıç:</dt>
+                            <dd class="col-sm-9">@subscription.StartDate.ToShortDateString()</dd>
                             
-                            <dt class="col-sm-4">Başlangıç:</dt>
-                            <dd class="col-sm-8">@subscription.StartDate.ToShortDateString()</dd>
-                            
-                            <dt class="col-sm-4">Bitiş:</dt>
-                            <dd class="col-sm-8">@subscription.EndDate.ToShortDateString()</dd>
-                        }
-                        else
-                        {
-                            <dt class="col-sm-4">Üyelik:</dt>
-                            <dd class="col-sm-8">
-                                <span class="text-muted">Aktif üyelik bulunmuyor</span>
+                            <dt class="col-sm-3">Bitiş:</dt>
+                            <dd class="col-sm-9">
+                                <span class="@(subscription.EndDate < DateTime.Now ? "text-danger fw-bold" : "")">
+                                    @subscription.EndDate.ToShortDateString()
+                                    @if (subscription.EndDate < DateTime.Now)
+                                    {
+                                        <i class="bi bi-exclamation-triangle-fill ms-1"></i>
+                                        <small>(Süresi dolmuş)</small>
+                                    }
+                                    else
+                                    {
+                                        <small>(@((subscription.EndDate - DateTime.Now).Days) gün kaldı)</small>
+                                    }
+                                </span>
                             </dd>
                         }
                     </dl>
@@ -88,7 +94,161 @@
             </div>
         </div>
     </div>
-</div>
+
+<!-- Sayfa için özel CSS stilleri -->
+<style>
+    /* Profil resmi için stil */
+    .profile-image {
+        max-width: 150px;
+        border: 3px solid #e9d5ff;
+        border-radius: 50%;
+        box-shadow: 0 3px 10px rgba(124, 58, 237, 0.2);
+    }
+    
+    /* Profil resmi yoksa gösterilecek placeholder */
+    .profile-placeholder {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 4rem;
+    }
+    
+    /* Kullanıcı bilgileri için ek stiller */
+    dt {
+        color: #6d28d9;
+        font-weight: 600;
+    }
+    
+    dd {
+        color: #4a148c;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Rozet stilleri */
+    .badge.bg-primary {
+        background-color: #7c3aed !important;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 50px;
+    }
+    
+    .badge.bg-success {
+        background-color: #10b981 !important;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 50px;
+    }
+    
+    /* İstatistik kartları */
+    .stat-card {
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        border-radius: 8px;
+        padding: 1.2rem;
+        text-align: center;
+        border: 1px solid #ddd6fe;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(124, 58, 237, 0.15);
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #7c3aed;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.2rem;
+        font-weight: 600;
+        color: #4a148c;
+    }
+    
+    .stat-content p {
+        color: #6d28d9;
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+    
+    /* Butonlar için ek stiller */
+    .btn-primary {
+        background: #7c3aed;
+        border: none;
+        box-shadow: 0 2px 4px rgba(124, 58, 237, 0.15);
+        transition: all 0.2s ease;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+    
+    .btn-primary:hover {
+        background: #6d28d9;
+        box-shadow: 0 4px 8px rgba(124, 58, 237, 0.25);
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        background-color: #e9d5ff;
+        border: 1px solid #c4b5fd;
+        color: #581c87;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border-radius: 6px;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #ddd6fe;
+        border-color: #a855f7;
+        color: #4a148c;
+        transform: translateY(-1px);
+    }
+    
+    /* Kart başlıkları */
+    .card-header h5 {
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+    
+    /* Başlık */
+    h2 {
+        color: #4a148c;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    /* Kart stilleri */
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e9d5ff;
+        box-shadow: 0 2px 8px rgba(196, 181, 253, 0.1);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        border-bottom: 1px solid #ddd6fe;
+        padding: 1rem 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+        background: #faf5ff;
+    }
+</style>
 
 @section Scripts {
     <script>
