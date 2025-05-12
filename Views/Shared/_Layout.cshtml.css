@@ -5,7 +5,6 @@
     min-height: 100vh;
 }
 
-/* Navbar Styles */
 .navbar {
     background: linear-gradient(90deg, #e9d5ff 0%, #ddd6fe 100%) !important;
     border-bottom: 1px solid #c4b5fd !important;
@@ -33,7 +32,6 @@
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2888, 28, 135, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-/* Navigation Links */
 .nav-link {
     color: #6d28d9 !important;
     transition: all 0.3s ease;
@@ -55,7 +53,6 @@
     color: #4a148c !important;
 }
 
-/* Specific styling for admin and membership links */
 .navbar-nav .nav-link[href*="ListAllUsers"],
 .navbar-nav .nav-link[href*="ViewAllMemberships"] {
     color: #4a148c !important;
@@ -71,7 +68,6 @@
     text-shadow: 0 0 4px rgba(109, 40, 217, 0.4);
 }
 
-/* Profile styles */
 .profile-gradient-avatar {
     width: 36px;
     height: 36px;
@@ -102,7 +98,6 @@
     font-weight: 500;
 }
 
-/* Buttons */
 .btn-primary {
     background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
     border: none;
@@ -118,7 +113,6 @@
     color: #ffffff;
 }
 
-/* Cards */
 .card {
     background: #faf5ff;
     border: 1px solid #e9d5ff;
@@ -133,7 +127,6 @@
     font-weight: 600;
 }
 
-/* Alerts */
 .alert {
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -163,7 +156,6 @@
     color: #ea580c;
 }
 
-/* Forms */
 .form-control {
     background-color: #faf5ff;
     border: 1px solid #ddd6fe;
@@ -185,7 +177,6 @@
     color: #6d28d9;
 }
 
-/* Tables */
 .table {
     color: #4a148c;
 }
@@ -209,7 +200,6 @@
     background-color: #faf5ff;
 }
 
-/* Text Colors */
 .text-muted {
     color: #a78bfa !important;
 }
@@ -230,7 +220,6 @@
     color: #ea580c !important;
 }
 
-/* Dropdown Styles */
 .dropdown-menu {
     background-color: #faf5ff;
     border: 1px solid #e9d5ff;
@@ -245,14 +234,12 @@
     color: #6d28d9;
 }
 
-/* Input Groups */
 .input-group-text {
     background-color: #f3e8ff;
     border: 1px solid #ddd6fe;
     color: #7c3aed;
 }
 
-/* Links */
 a {
     color: #7c3aed;
 }
@@ -261,7 +248,6 @@ a:hover {
     color: #6d28d9;
 }
 
-/* Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -280,7 +266,6 @@ a:hover {
     background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
 }
 
-/* Utility Classes */
 .bg-gradient-purple {
     background: linear-gradient(135deg, #f3e8ff 0%, #ddd6fe 100%);
 }
@@ -301,7 +286,6 @@ a:hover {
     border-color: #c4b5fd;
 }
 
-/* Responsive */
 @media (max-width: 767px) {
     .navbar-brand {
         font-size: 1.1rem;

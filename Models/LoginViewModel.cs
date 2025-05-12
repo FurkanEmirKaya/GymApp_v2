@@ -1,4 +1,3 @@
-// ViewModels/LoginViewModel.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace GymApp_v1.ViewModels

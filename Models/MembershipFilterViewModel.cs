@@ -1,4 +1,3 @@
-// ViewModels/MembershipFilterViewModel.cs
 using GymApp_v1.Data;
 
 namespace GymApp_v1.ViewModels

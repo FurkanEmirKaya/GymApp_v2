@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -110,7 +105,6 @@ namespace GymApp_v2.Services
             }
             catch (Exception ex)
             {
-                // Log the error
                 throw new Exception("Email gönderimi sırasında hata oluştu.", ex);
             }
             finally

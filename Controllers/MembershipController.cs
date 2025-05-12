@@ -3,6 +3,7 @@ using GymApp_v1.Data;
 using GymApp_v1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace efCoreApp.AddControllers
@@ -113,7 +114,7 @@ namespace efCoreApp.AddControllers
             if (membership == null)
                 return NotFound();
 
-            return View(membership); // Views/Membership/Details.cshtml olacak
+            return View(membership); // Views/Membership/Details.cshtml
         }
 
        
@@ -137,49 +138,83 @@ namespace efCoreApp.AddControllers
         {
             var membership = await _context.Memberships.FindAsync(id);
             if (membership == null)
+            {
                 return NotFound();
-
+            }
+            
+            // TypeItems'ı ViewBag'e ekleyin
+            ViewBag.TypeItems = new[]
+            {
+                new SelectListItem("Havuz Üyeliği", MembershipType.Pool.ToString()),
+                new SelectListItem("Fitness Üyeliği", MembershipType.Fitness.ToString()),
+                new SelectListItem("Gold Üyelik", MembershipType.Gold.ToString())
+            };
+            
             return View(membership);
         }
-
+        
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(Membership updatedMembership, IFormFile? newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,DurationInDays,Price,Type")] Membership membership, IFormFile? newImage)
         {
-            var membership = await _context.Memberships.FindAsync(updatedMembership.Id);
-            if (membership == null)
-                return NotFound();
-
-            if (!ModelState.IsValid)
-                return View(updatedMembership);
-
-            // Alanları güncelle
-            membership.Title = updatedMembership.Title;
-            membership.Description = updatedMembership.Description;
-            membership.DurationInDays = updatedMembership.DurationInDays;
-            membership.Price = updatedMembership.Price;
-            membership.Type = updatedMembership.Type;
-
-            if (newImage != null && newImage.Length > 0)
+            if (id != membership.Id)
             {
-                using var ms = new MemoryStream();
-                await newImage.CopyToAsync(ms);
-                membership.Image = ms.ToArray();
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("ViewAllMemberships");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingMembership = await _context.Memberships.FindAsync(id);
+                    if (existingMembership == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Varolan üyelik paketini güncelle
+                    existingMembership.Title = membership.Title;
+                    existingMembership.Description = membership.Description;
+                    existingMembership.DurationInDays = membership.DurationInDays;
+                    existingMembership.Price = membership.Price;
+                    existingMembership.Type = membership.Type;
+
+                    // Eğer fotoğraf yüklendiyse veritabanına yüklemek üzere dönüştür. jpg/png -> byte[]
+                    if (newImage != null && newImage.Length > 0)
+                    {
+                        using var ms = new MemoryStream();
+                        await newImage.CopyToAsync(ms);
+                        existingMembership.Image = ms.ToArray();
+                    }
+
+                    _context.Update(existingMembership);
+                    await _context.SaveChangesAsync();
+                    
+                    return RedirectToAction(nameof(ViewAllMemberships));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Memberships.Any(e => e.Id == membership.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            
+            // Model geçerli değilse, ViewBag'i tekrar doldur
+            ViewBag.TypeItems = new[]
+            {
+                new SelectListItem("Havuz Üyeliği", MembershipType.Pool.ToString()),
+                new SelectListItem("Fitness Üyeliği", MembershipType.Fitness.ToString()),
+                new SelectListItem("Gold Üyelik", MembershipType.Gold.ToString())
+            };
+            
+            return View(membership);
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }

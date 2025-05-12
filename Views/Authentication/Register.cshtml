@@ -19,13 +19,12 @@
 <body>
     <div class="auth-page">
         <div class="auth-container">
-            <!-- Welcome Message -->
+      
             <div class="welcome-header">
                 <h1 class="welcome-title">GYM App'e Katılın!</h1>
                 <p class="welcome-subtitle">Fitness yolculuğunuza bugün başlayın</p>
             </div>
 
-            <!-- Success/Error Messages -->
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
@@ -44,16 +43,15 @@
                 </div>
             }
             
-            <!-- Register Card -->
-            <div class="card">
+            <div class="card" style="background-color: #27272af2;">
                 <div class="card-header">
                     <h3>
                         <i class="bi bi-person-plus-fill me-2"></i>
                         Yeni Hesap Oluştur
                     </h3>
                 </div>
-                <div class="card-body">
-                    <!-- ViewBag Error -->
+                <div class="card-body" style="background-color: #27272af2;">
+                   
                     @if (ViewBag.Error != null)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -62,7 +60,6 @@
                         </div>
                     }
                     
-                    <!-- Validation Summary -->
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
                     
                     <form asp-action="Register" method="post">
@@ -113,7 +110,7 @@
                                 </button>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <a asp-action="Login" class="btn btn-link w-100" style="border: 1px solid #3f3f46; padding: 0.6rem 1rem;">
+                                <a asp-action="Login" class="btn btn-primary w-100" style="border: 1px solid #3f3f46; padding: 0.6rem 1rem;">
                                     <i class="bi bi-arrow-left me-2"></i>Geri Dön
                                 </a>
                             </div>
@@ -132,19 +129,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Security Info Card -->
-            <div class="card mt-4">
-                <div class="card-body text-center py-3">
-                    <small style="color: #71717a;">
-                        <i class="bi bi-shield-check me-1"></i>
-                        Bilgileriniz güvenli bir şekilde saklanır.
-                    </small>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        
 
 </body>
 </html>

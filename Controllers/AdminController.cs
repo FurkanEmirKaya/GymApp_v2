@@ -52,7 +52,7 @@ namespace efCoreApp.AddControllers
                 Title = model.Title,
                 Description = model.Description,
                 DurationInDays = model.DurationInDays,
-                Type = model.Type.ToString(), // enum → string dönüşüm
+                Type = model.Type.ToString(),
                 Price = model.Price,
                 Image = model.Image != null ? FileToBytes(model.Image) : null
             };
@@ -60,9 +60,10 @@ namespace efCoreApp.AddControllers
             _context.Memberships.Add(entity);
             await _context.SaveChangesAsync();
             
-            // ViewAllMemberships'e yönlendirin
+            // ViewAllMemberships'e yönlendirme
             return RedirectToAction("ViewAllMemberships", "Membership");
         }
+        
         #region User Operations
         
         [HttpGet]
@@ -81,7 +82,7 @@ namespace efCoreApp.AddControllers
                 return View(model);
             }
             
-            // Check if email already exists
+            // Email halihazırda var mı kontrol et
             if (await _context.Users.AnyAsync(u => u.Email == model.Email))
             {
                 ModelState.AddModelError("Email", "Bu email adresi zaten kullanımda.");
@@ -94,8 +95,11 @@ namespace efCoreApp.AddControllers
                 Email = model.Email,
                 Username = model.Username,
                 Role = model.Role,
-                MembershipId = model.MembershipId,
-                Password = string.Empty // Geçici değer, hemen sonra hash'lenmiş şifre ile değişecek
+                // MembershipId'yi kontrol et - null veya 0 ise hiç atama yapma veya null ata
+                MembershipId = model.MembershipId.HasValue && model.MembershipId.Value > 0 
+                    ? model.MembershipId.Value 
+                    : (int?)null, // Nullable int olarak null ata
+                Password = string.Empty
             };
             
             // Hash password
@@ -142,8 +146,7 @@ namespace efCoreApp.AddControllers
                 if (membershipFilter == "none")
                 {
                     // Üyeliği olmayanları göster
-                    usersQuery = usersQuery.Where(u => !u.Subscriptions.Any() || 
-                        !u.Subscriptions.Any(s => s.EndDate > DateTime.Now));
+                    usersQuery = usersQuery.Where(u => u.MembershipId == null || u.MembershipId == 0 || !u.Subscriptions.Any() || !u.Subscriptions.Any(s => s.EndDate > DateTime.Now));
                 }
                 else if (membershipFilter == "active")
                 {
@@ -241,7 +244,7 @@ namespace efCoreApp.AddControllers
             if (user == null)
                 return NotFound();
             
-            // Check if email is already used by another user
+            // Email halihazırda başka bir kullanıcı tarafından kullanılıyor mu 
             if (await _context.Users.AnyAsync(u => u.Email == model.Email && u.Id != model.Id))
             {
                 ModelState.AddModelError("Email", "Bu email adresi zaten kullanımda.");
@@ -252,15 +255,18 @@ namespace efCoreApp.AddControllers
             user.Email = model.Email;
             user.Username = model.Username;
             user.Role = model.Role;
-            user.MembershipId = model.MembershipId;
+            // EditUser'da da aynı kontrolü uygula
+            user.MembershipId = model.MembershipId.HasValue && model.MembershipId.Value > 0 
+                ? model.MembershipId.Value 
+                : (int?)null;
             
-            // Update password if new password is provided
+            // Eğer kullanıcı yeni şifre girdiyse veritabanına yollamak için şifrele
             if (!string.IsNullOrEmpty(model.NewPassword))
             {
                 user.Password = _passwordHasher.HashPassword(user, model.NewPassword);
             }
             
-            // Update profile picture if new one is uploaded
+            // Eğer kullanıcı yeni profil fotoğrafı eklediyse veritabanına yollamak için dönüştür. jpg/png -> byte[]
             if (model.NewProfilePicture != null && model.NewProfilePicture.Length > 0)
             {
                 user.ProfilePicture = FileToBytes(model.NewProfilePicture);
@@ -302,9 +308,6 @@ namespace efCoreApp.AddControllers
         }
         
         #endregion
-        
-        // Mevcut diğer metodlarınız...
-
 
         private byte[] FileToBytes(IFormFile file)
         {

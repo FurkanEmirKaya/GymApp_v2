@@ -59,15 +59,13 @@ namespace efCoreApp.AddControllers
         [HttpPost]
         public async Task<IActionResult> Cancel(int id)
         {
-            // 1) Üyelik nesnesini bulmaya gerek yok, doğrudan Subscription üzerinden devam edelim
-            //    id: Subscription.Id veya MembershipId ise ona göre sorgu yapın
-            //    Aşağıda id Subscription.Id olarak varsaydım.
+
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
             if (user == null)
                 return Unauthorized();
 
-            // 2) İlgili aboneliği getir
+            // İlgili aboneliği getir
             var subscription = await _context.Subscriptions
                 .FirstOrDefaultAsync(s => s.Id == id && s.UserId == user.Id && s.EndDate > DateTime.Now);
 
@@ -77,7 +75,7 @@ namespace efCoreApp.AddControllers
                 return RedirectToAction("Dashboard", "Profile");
             }
 
-            // 3a) Soft-cancel: bugün itibariyle bitir
+            // Soft-cancel: Aslında veri tabanından silinmez. İlerisi için kayıt olur. (Bugün itibariyle bitir)
             subscription.EndDate = DateTime.Now;
 
             await _context.SaveChangesAsync();

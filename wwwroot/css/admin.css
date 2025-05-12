@@ -1,13 +1,11 @@
 /* admin.css - Admin Sayfaları için Açık Mor Tema */
 
-/* Genel Container */
 .admin-container {
     background: linear-gradient(135deg, #f9fafb 0%, #faf5ff 100%);
     min-height: 100vh;
     padding: 20px;
 }
 
-/* Page Headers */
 h2 {
     color: #4a148c;
     font-weight: 600;
@@ -25,12 +23,11 @@ h5 {
     font-weight: 500;
 }
 
-/* Cards */
 .card {
     background: #ffffff;
     border: 1px solid #e9d5ff;
-    border-radius: 8px; /* daha az yuvarlak */
-    box-shadow: 0 1px 3px rgba(196, 181, 253, 0.1); /* daha hafif gölge */
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(196, 181, 253, 0.1); 
     margin-bottom: 1.5rem;
 }
 
@@ -39,7 +36,7 @@ h5 {
     border-bottom: 1px solid #ddd6fe;
     color: #581c87;
     font-weight: 600;
-    border-radius: 8px 8px 0 0 !important; /* daha az yuvarlak */
+    border-radius: 8px 8px 0 0 !important; 
 }
 
 .card-body {
@@ -47,7 +44,6 @@ h5 {
     background: #faf5ff;
 }
 
-/* Forms */
 .form-label {
     color: #6d28d9;
     font-weight: 500;
@@ -59,7 +55,7 @@ h5 {
     background-color: #ffffff;
     border: 1px solid #ddd6fe;
     color: #4a148c;
-    border-radius: 6px; /* daha az yuvarlak */
+    border-radius: 6px;
     padding: 0.5rem 0.75rem;
 }
 
@@ -75,24 +71,23 @@ h5 {
     color: #9ca3af;
 }
 
-/* Butonlar - daha sade */
 .btn {
-    border-radius: 6px; /* daha az yuvarlak */
-    padding: 0.4rem 0.9rem; /* biraz daha küçük */
+    border-radius: 6px; 
+    padding: 0.4rem 0.9rem; 
     font-weight: 500;
-    transition: all 0.2s ease; /* daha hızlı animasyon */
+    transition: all 0.2s ease; 
 }
 
 .btn-primary {
-    background: #7c3aed; /* gradyanı kaldırıp düz renk */
+    background: #7c3aed;
     border: none;
     color: #ffffff;
-    box-shadow: 0 1px 2px rgba(124, 58, 237, 0.1); /* daha hafif gölge */
+    box-shadow: 0 1px 2px rgba(124, 58, 237, 0.1);
 }
 
 .btn-primary:hover {
-    background: #6d28d9; /* hover'da düz renk */
-    transform: translateY(0px); /* yükselme efektini kaldır */
+    background: #6d28d9; 
+    transform: translateY(0px);
     box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
     color: #ffffff;
 }
@@ -107,7 +102,7 @@ h5 {
     background-color: #ddd6fe;
     border-color: #a855f7;
     color: #4a148c;
-    transform: translateY(0px); /* yükselme efektini kaldır */
+    transform: translateY(0px); 
 }
 
 .btn-danger {
@@ -120,7 +115,7 @@ h5 {
     background-color: #fee2e2;
     border-color: #f87171;
     color: #b91c1c;
-    transform: translateY(0px); /* yükselme efektini kaldır */
+    transform: translateY(0px);
 }
 
 .btn-sm {
@@ -128,7 +123,6 @@ h5 {
     font-size: 0.875rem;
 }
 
-/* Validation */
 .text-danger {
     color: #dc2626 !important;
     font-size: 0.875rem;
@@ -140,9 +134,8 @@ h5 {
     margin-top: 0.25rem;
 }
 
-/* Alerts */
 .alert {
-    border-radius: 6px; /* daha az yuvarlak */
+    border-radius: 6px;
     border: 1px solid;
     padding: 1rem;
     margin-bottom: 1.5rem;
@@ -167,11 +160,10 @@ h5 {
     margin-bottom: 0.5rem;
 }
 
-/* Tables */
 .table {
     background: #ffffff;
     color: #4a148c;
-    border-radius: 6px; /* daha az yuvarlak */
+    border-radius: 6px;
     overflow: hidden;
 }
 
@@ -203,10 +195,9 @@ h5 {
     background-color: #fffbeb !important;
 }
 
-/* Badges */
 .badge {
     padding: 0.25rem 0.5rem;
-    border-radius: 4px; /* daha az yuvarlak */
+    border-radius: 4px;
     font-weight: 500;
     font-size: 0.75rem;
 }
@@ -221,7 +212,6 @@ h5 {
     color: #ffffff;
 }
 
-/* Button Groups */
 .btn-group .btn {
     border-radius: 0;
     border-left: none;
@@ -229,24 +219,22 @@ h5 {
 
 .btn-group .btn:first-child {
     border-left: 1px solid;
-    border-radius: 6px 0 0 6px; /* daha az yuvarlak */
+    border-radius: 6px 0 0 6px;
 }
 
 .btn-group .btn:last-child {
-    border-radius: 0 6px 6px 0; /* daha az yuvarlak */
+    border-radius: 0 6px 6px 0;
 }
 
 .btn-group .btn-sm {
     padding: 0.25rem 0.5rem;
 }
 
-/* Images */
 .rounded {
-    border-radius: 6px !important; /* daha az yuvarlak */
-    border: 1px solid #e9d5ff; /* daha ince border */
+    border-radius: 6px !important; 
+    border: 1px solid #e9d5ff; 
 }
 
-/* Description Lists */
 .row dt {
     color: #6d28d9;
     font-weight: 600;
@@ -256,21 +244,18 @@ h5 {
     color: #4a148c;
 }
 
-/* Search and Filter Section */
 .search-filter-section {
     background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    border-radius: 8px; /* daha az yuvarlak */
+    border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 2rem;
     border: 1px solid #e9d5ff;
 }
 
-/* Text Utilities */
 .text-muted {
     color: #7c3aed !important;
 }
 
-/* Navbar ve Link Renkleri */
 .navbar .nav-link {
     color: #581c87;
 }
@@ -284,12 +269,11 @@ h5 {
     font-weight: 600;
 }
 
-/* File Upload */
 input[type="file"] {
     padding: 0.5rem;
     background-color: #faf5ff;
     border: 1px dashed #ddd6fe;
-    border-radius: 6px; /* daha az yuvarlak */
+    border-radius: 6px; 
 }
 
 input[type="file"]:focus {
@@ -298,7 +282,6 @@ input[type="file"]:focus {
     box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.15);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .admin-container {
         padding: 10px;
@@ -309,12 +292,11 @@ input[type="file"]:focus {
     }
     
     .table-responsive {
-        border-radius: 6px; /* daha az yuvarlak */
+        border-radius: 6px; 
         overflow-x: auto;
     }
 }
 
-/* Loading States - daha az animasyon */
 .btn.loading {
     position: relative;
     color: transparent;
@@ -332,7 +314,7 @@ input[type="file"]:focus {
     border: 2px solid #ffffff;
     border-radius: 50%;
     border-top-color: transparent;
-    animation: spinner 0.6s linear infinite; /* daha hızlı animasyon */
+    animation: spinner 0.6s linear infinite; 
 }
 
 @keyframes spinner {
@@ -340,12 +322,10 @@ input[type="file"]:focus {
     100% { transform: rotate(360deg); }
 }
 
-/* Varsayılan metin renkleri */
 body {
     color: #4a148c;
 }
 
-/* Özel Profile Avatar */
 .profile-gradient-avatar {
     display: flex;
     align-items: center;
@@ -358,7 +338,6 @@ body {
     margin-right: 0.5rem;
 }
 
-/* Footer Stili */
 .footer {
     background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
     border-top: 1px solid #ddd6fe;

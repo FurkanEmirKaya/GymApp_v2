@@ -4,7 +4,6 @@
     var subscription = ViewBag.Subscription as GymApp_v1.Data.Subscription;
 }
 
-<!-- Sayfa için admin.css stil dosyasını ekleyelim -->
 <link rel="stylesheet" href="~/css/admin.css" />
 
 <div class="admin-container">
@@ -97,15 +96,15 @@
 
 <!-- Sayfa için özel CSS stilleri -->
 <style>
-    /* Profil resmi için stil */
     .profile-image {
-        max-width: 150px;
+        width: 150px;
+        height: 150px;
         border: 3px solid #e9d5ff;
         border-radius: 50%;
         box-shadow: 0 3px 10px rgba(124, 58, 237, 0.2);
+        object-fit: cover; 
     }
     
-    /* Profil resmi yoksa gösterilecek placeholder */
     .profile-placeholder {
         width: 150px;
         height: 150px;
@@ -118,8 +117,7 @@
         color: white;
         font-size: 4rem;
     }
-    
-    /* Kullanıcı bilgileri için ek stiller */
+
     dt {
         color: #6d28d9;
         font-weight: 600;
@@ -130,7 +128,6 @@
         margin-bottom: 0.5rem;
     }
     
-    /* Rozet stilleri */
     .badge.bg-primary {
         background-color: #7c3aed !important;
         padding: 0.5rem 0.8rem;
@@ -146,8 +143,7 @@
         font-weight: 500;
         border-radius: 50px;
     }
-    
-    /* İstatistik kartları */
+
     .stat-card {
         background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
         border-radius: 8px;
@@ -182,7 +178,6 @@
         font-size: 0.9rem;
     }
     
-    /* Butonlar için ek stiller */
     .btn-primary {
         background: #7c3aed;
         border: none;
@@ -215,21 +210,18 @@
         color: #4a148c;
         transform: translateY(-1px);
     }
-    
-    /* Kart başlıkları */
+
     .card-header h5 {
         margin-bottom: 0;
         font-weight: 600;
     }
-    
-    /* Başlık */
+
     h2 {
         color: #4a148c;
         font-weight: 600;
         margin-bottom: 0;
     }
-    
-    /* Kart stilleri */
+
     .card {
         border-radius: 10px;
         overflow: hidden;

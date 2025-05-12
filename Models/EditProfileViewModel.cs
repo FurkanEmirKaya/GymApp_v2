@@ -1,4 +1,3 @@
-// ViewModels/EditProfileViewModel.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace GymApp_v1.ViewModels
@@ -20,7 +19,7 @@ namespace GymApp_v1.ViewModels
         
         [Compare("NewPassword", ErrorMessage = "Şifreler eşleşmiyor")]
         public string? ConfirmPassword { get; set; }
-        
+        // Yeni profil resmini eklemek için
         public IFormFile? NewProfilePicture { get; set; }
         
         // Mevcut profil resmini görüntülemek için

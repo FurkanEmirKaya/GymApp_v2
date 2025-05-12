@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>(); 
@@ -31,7 +30,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -52,7 +50,8 @@ app.MapControllerRoute(
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
     
 app.MapControllers(); 
-// Uygulama başlangıcında varsayılan kullanıcıları oluştur
+
+// Uygulama başlangıcında varsayılan kullanıcıları oluştur. Seedle
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DataContext>();

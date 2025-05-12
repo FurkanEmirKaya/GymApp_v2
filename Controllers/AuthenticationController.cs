@@ -33,7 +33,7 @@ namespace GymApp_v1.Controllers
 
         public IActionResult Register()
         {
-            return View(); // bu Register.cshtml'i döndürür
+            return View();
         }
 
         [HttpPost]
@@ -171,7 +171,7 @@ namespace GymApp_v1.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Reset bağlantısı oluştur - null reference kontrolü ekleyin
+            // Reset bağlantısı oluştur
             var resetLink = Url.Action("ResetPassword", "Authentication", 
                 new { token = token }, Request.Scheme);
             
@@ -189,10 +189,8 @@ namespace GymApp_v1.Controllers
             }
             catch (Exception ex)
             {
-                // Log the error - ex kullanımı için
+               
                 Console.WriteLine($"Email gönderimi hatası: {ex.Message}");
-                // veya logger kullanın:
-                // _logger.LogError(ex, "Email gönderimi sırasında hata oluştu");
                 
                 TempData["ErrorMessage"] = "Email gönderimi sırasında bir hata oluştu. Lütfen tekrar deneyin.";
             }
@@ -222,9 +220,9 @@ namespace GymApp_v1.Controllers
         var model = new ResetPasswordViewModel
         {
             Email = user.Email,
-            NewPassword = string.Empty,  // required property'yi set edin
-            ConfirmPassword = string.Empty,  // required property'yi set edin
-            Token = token  // Token'ı set edin
+            NewPassword = string.Empty,  // required alanı set et
+            ConfirmPassword = string.Empty,  // required alanı set et
+            Token = token  // Token'ı set et
         };
 
         return View(model);

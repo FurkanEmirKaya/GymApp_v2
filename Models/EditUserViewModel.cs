@@ -12,7 +12,7 @@ namespace GymApp_v1.ViewModels
         public string Email { get; set; } = string.Empty;
         
         [MinLength(6)]
-        public string? NewPassword { get; set; } // Nullable for optional password change
+        public string? NewPassword { get; set; }
         
         [Required]
         public string Username { get; set; } = string.Empty;

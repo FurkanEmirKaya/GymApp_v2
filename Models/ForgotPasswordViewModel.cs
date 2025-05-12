@@ -1,4 +1,3 @@
-// ViewModels/ForgotPasswordViewModel.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace GymApp_v1.ViewModels

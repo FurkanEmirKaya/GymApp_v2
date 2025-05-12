@@ -3,7 +3,6 @@
     ViewData["Title"] = "Üyelik Paketi Listesi";
 }
 
-<!-- Direkt olarak bu sayfaya özel CSS bağlantısı -->
 <link rel="stylesheet" href="~/css/admin.css" />
 
 <div class="admin-container">
@@ -16,7 +15,6 @@
         </a>
     }
 
-    <!-- Arama ve Filtreleme Formu -->
     <div class="card mb-4 search-filter-section">
         <div class="card-header">
             <h5><i class="bi bi-funnel me-2"></i>Arama ve Filtreleme</h5>
@@ -162,7 +160,6 @@
                                 {
                                     @if (Model.CurrentSubscription != null && Model.CurrentSubscription.MembershipId == membership.Id)
                                     {
-                                        <!-- Aboneliği iptal et butonu -->
                                         <form asp-controller="Subscription"
                                               asp-action="Cancel"
                                               asp-route-id="@Model.CurrentSubscription.Id"
@@ -177,7 +174,6 @@
                                     }
                                     else if (Model.CurrentSubscription == null)
                                     {
-                                        <!-- Hiç abonelik yoksa satın al butonu -->
                                         <a asp-controller="Subscription"
                                            asp-action="Buy"
                                            asp-route-id="@membership.Id"
@@ -197,7 +193,6 @@
 
 <!-- Sayfa için özel CSS stilleri -->
 <style>
-    /* Ekstra sayfa-spesifik buton güzelleştirmeleri */
     .btn-primary {
         background: #7c3aed;
         border: none;
@@ -236,7 +231,6 @@
         color: #b91c1c;
     }
     
-    /* Buton grupları için özel stil */
     .btn-group .btn {
         border-radius: 0;
     }
@@ -249,12 +243,10 @@
         border-radius: 0 6px 6px 0;
     }
     
-    /* Badge stilleri */
     .badge.bg-primary {
         background-color: #7c3aed !important;
     }
     
-    /* Tablo başlık satırı */
     .table thead th {
         background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
         color: #581c87;
@@ -264,12 +256,10 @@
         padding: 0.75rem;
     }
     
-    /* Tablo hover efekti */
     .table tbody tr:hover {
         background-color: #f3e8ff;
     }
     
-    /* Card stilleri */
     .search-filter-section {
         background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
         border: 1px solid #e9d5ff;
@@ -282,7 +272,6 @@
         color: #581c87;
     }
     
-    /* Metin renkleri */
     .text-muted {
         color: #7c3aed !important;
     }

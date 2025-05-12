@@ -41,14 +41,6 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label asp-for="MembershipId" class="form-label">Üyelik</label>
-                    <select asp-for="MembershipId" class="form-select" asp-items="ViewBag.Memberships">
-                        <option value="">Üyelik Seçin (İsteğe Bağlı)</option>
-                    </select>
-                    <span asp-validation-for="MembershipId" class="text-danger"></span>
-                </div>
-                
-                <div class="mb-3">
                     <label asp-for="ProfilePicture" class="form-label">Profil Resmi</label>
                     <input asp-for="ProfilePicture" type="file" class="form-control" accept="image/*" />
                     <span asp-validation-for="ProfilePicture" class="text-danger"></span>

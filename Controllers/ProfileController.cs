@@ -8,7 +8,7 @@ using GymApp_v1.ViewModels;
 
 namespace GymApp_v1.Controllers
 {
-    [Authorize(Roles = "User")] // sadece "User" rol�ndeki kullan�c�lar g�rebilir
+    [Authorize(Roles = "User")] // sadece "User" rolündeki kullanıcılar görebilir
     public class ProfileController : Controller
     {
         private readonly DataContext _context;
@@ -27,7 +27,7 @@ namespace GymApp_v1.Controllers
             if (user == null)
                 return Unauthorized();
         
-            // Yalnızca aktif (EndDate > Now) aboneliği getir
+            // Yalnızca aktif (EndDate > Now) olan aboneliği getir
             var subscription = await _context.Subscriptions
             .Include(s => s.Membership)
             .Where(s => s.UserId == user.Id && s.EndDate > DateTime.Now)
@@ -113,7 +113,7 @@ namespace GymApp_v1.Controllers
 
             if (user == null)
                 return Unauthorized();
-            return View(user); // user yine Model
+            return View(user); // user modelini döndürdük.
         }
 
 
