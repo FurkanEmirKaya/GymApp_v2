@@ -15,7 +15,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Authentication/Login"; // yetkisiz kullan�c�lar� buraya yollar
+        options.LoginPath = "/Authentication/Login"; // yetkisiz kullanıcıları buraya yollar
     });
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -46,13 +46,13 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Varsay�lan route
+// Varsayılan route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
     
 app.MapControllers(); 
-// Uygulama ba�lang�c�nda varsay�lan kullan�c�lar� olu�tur
+// Uygulama başlangıcında varsayılan kullanıcıları oluştur
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DataContext>();

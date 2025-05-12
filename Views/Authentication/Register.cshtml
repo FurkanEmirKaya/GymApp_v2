@@ -145,28 +145,6 @@
         </div>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    
-    <script>
-        // Form submit animation
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const btn = document.getElementById('registerBtn');
-            const originalContent = btn.innerHTML;
-            
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Kayıt yapılıyor...';
-            btn.disabled = true;
-            
-            // Reset button if validation fails
-            setTimeout(() => {
-                if (!this.checkValidity() && this.querySelector('.text-danger:not(:empty)')) {
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                }
-            }, 100);
-        });
-    </script>
+
 </body>
 </html>

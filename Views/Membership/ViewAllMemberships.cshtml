@@ -3,20 +3,23 @@
     ViewData["Title"] = "Üyelik Paketi Listesi";
 }
 
+<!-- Direkt olarak bu sayfaya özel CSS bağlantısı -->
+<link rel="stylesheet" href="~/css/admin.css" />
+
 <div class="admin-container">
     <h2>Üyelik Paketi Listesi</h2>
     
     @if (User.IsInRole("Admin"))
     {
         <a asp-controller="Admin" asp-action="CreateMemberships" class="btn btn-sm btn-primary mb-3">
-            <i class="bi bi-plus-circle"></i> Üyelik Paketi Ekle
+            <i class="bi bi-plus-circle me-1"></i> Üyelik Paketi Ekle
         </a>
     }
 
     <!-- Arama ve Filtreleme Formu -->
-    <div class="card mb-4">
+    <div class="card mb-4 search-filter-section">
         <div class="card-header">
-            <h5>Arama ve Filtreleme</h5>
+            <h5><i class="bi bi-funnel me-2"></i>Arama ve Filtreleme</h5>
         </div>
         <div class="card-body">
             <form method="get" asp-action="ViewAllMemberships">
@@ -62,8 +65,12 @@
                     
                     <div class="col-md-2 d-flex align-items-end">
                         <div class="btn-group" role="group">
-                            <button type="submit" class="btn btn-primary">Uygula</button>
-                            <a href="@Url.Action("ViewAllMemberships")" class="btn btn-secondary">Sıfırla</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i>Uygula
+                            </button>
+                            <a href="@Url.Action("ViewAllMemberships")" class="btn btn-secondary">
+                                <i class="bi bi-x-lg me-1"></i>Sıfırla
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -138,16 +145,16 @@
                                     <div class="btn-group" role="group">
                                         <a asp-controller="Membership" asp-action="Details" asp-route-id="@membership.Id" 
                                            class="btn btn-sm btn-primary" title="Detayları Görüntüle">
-                                            Detaylar
+                                            <i class="bi bi-info-circle me-1"></i>Detaylar
                                         </a>
                                         <a asp-controller="Membership" asp-action="Edit" asp-route-id="@membership.Id" 
                                            class="btn btn-sm btn-secondary" title="Düzenle">
-                                            Düzenle
+                                            <i class="bi bi-pencil me-1"></i>Düzenle
                                         </a>
                                         <a asp-controller="Membership" asp-action="Delete" asp-route-id="@membership.Id" 
                                            class="btn btn-sm btn-danger" title="Sil"
                                            onclick="return confirm('Bu üyelik paketini silmek istediğinizden emin misiniz?');">
-                                            Sil
+                                            <i class="bi bi-trash me-1"></i>Sil
                                         </a>
                                     </div>
                                 }
@@ -164,7 +171,7 @@
                                             <button type="submit"
                                                     class="btn btn-sm btn-danger"
                                                     onclick="return confirm('Üyeliğinizi iptal etmek istediğinize emin misiniz?');">
-                                                Üyeliği İptal Et
+                                                <i class="bi bi-x-circle me-1"></i>Üyeliği İptal Et
                                             </button>
                                         </form>
                                     }
@@ -175,7 +182,7 @@
                                            asp-action="Buy"
                                            asp-route-id="@membership.Id"
                                            class="btn btn-sm btn-primary">
-                                            Satın Al
+                                            <i class="bi bi-cart-plus me-1"></i>Satın Al
                                         </a>
                                     }
                                 }
@@ -187,3 +194,96 @@
         </table>
     </div>
 </div>
+
+<!-- Sayfa için özel CSS stilleri -->
+<style>
+    /* Ekstra sayfa-spesifik buton güzelleştirmeleri */
+    .btn-primary {
+        background: #7c3aed;
+        border: none;
+        box-shadow: 0 1px 2px rgba(124, 58, 237, 0.1);
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+        background: #6d28d9;
+        box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+    }
+    
+    .btn-secondary {
+        background-color: #e9d5ff;
+        border: 1px solid #c4b5fd;
+        color: #581c87;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #ddd6fe;
+        border-color: #a855f7;
+        color: #4a148c;
+    }
+    
+    .btn-danger {
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-danger:hover {
+        background-color: #fee2e2;
+        border-color: #f87171;
+        color: #b91c1c;
+    }
+    
+    /* Buton grupları için özel stil */
+    .btn-group .btn {
+        border-radius: 0;
+    }
+    
+    .btn-group .btn:first-child {
+        border-radius: 6px 0 0 6px;
+    }
+    
+    .btn-group .btn:last-child {
+        border-radius: 0 6px 6px 0;
+    }
+    
+    /* Badge stilleri */
+    .badge.bg-primary {
+        background-color: #7c3aed !important;
+    }
+    
+    /* Tablo başlık satırı */
+    .table thead th {
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        color: #581c87;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        padding: 0.75rem;
+    }
+    
+    /* Tablo hover efekti */
+    .table tbody tr:hover {
+        background-color: #f3e8ff;
+    }
+    
+    /* Card stilleri */
+    .search-filter-section {
+        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        border: 1px solid #e9d5ff;
+        border-radius: 8px;
+    }
+    
+    .search-filter-section .card-header {
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        border-bottom: 1px solid #ddd6fe;
+        color: #581c87;
+    }
+    
+    /* Metin renkleri */
+    .text-muted {
+        color: #7c3aed !important;
+    }
+</style>
